@@ -10,10 +10,10 @@ ALL = \
 all: $(ALL)
 
 chapter2_report: $(CHAPTER2_DIR)/chapter2_report.tex
-	pdflatex $(PDFLATEXFLAGS) $?
+	pdflatex $(PDFLATEXFLAGS) -output-directory $(CHAPTER2_DIR) $?
 
 lab1_report: $(LAB1_DIR)/lab1_report.tex
-	pdflatex $(PDFLATEXFLAGS) $?
+	pdflatex $(PDFLATEXFLAGS) -output-directory $(LAB1_DIR) $?
 
 .PHONY: clean
 
