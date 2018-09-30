@@ -82,7 +82,7 @@ This chapter covers the basics of combinational logic design and heavily focuses
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \item \textbf{Boolean Equations}
 
-    Boolean equations deal with variables that are either TRUE or FALSE. Therefore, they are perfect for describing digital logic. The table below shows the terminologies, notations, and truth tables of some commonly used boolean equations.
+    Boolean equations deal with variables that are either TRUE or FALSE. Therefore, they are perfect for describing digital logic. The table below shows the terminologies, notations, and truth tables of some commonly used Boolean equations.
 
     \begin{center}
         \begin{tabular}{ | c | >{\centering\arraybackslash}p{6em} | >{\centering\arraybackslash}p{2em} | >{\centering\arraybackslash}p{2em} | >{\centering\arraybackslash}p{4em} | }
@@ -104,6 +104,19 @@ This chapter covers the basics of combinational logic design and heavily focuses
         \hline
         \end{tabular}
     \end{center}
+
+    A \textit{minterm} is a \textbf{product} involving all variables of the inputs to the function. A \textit{maxterm} is a \textbf{sum} involving all variables of the inputs to the function.
+
+    When multiple Boolean variables take part in a Boolean equation, the \textit{order of operations} is vital to determinant the result of the equation---similarly to the order of operations in decimal-based algebra. In Boolean equations, \textbf{NOT has the highest precedence, followed by AND, and then OR}. For instance, the Boolean equation:
+
+    \begin{equation}
+        Y = \bar{A}B + BC\bar{D}
+    \end{equation}
+
+    can be interpreted as
+    \begin{equation}
+        Y = ((\bar{A})B) + (BC(\bar{D})) = ((\text{NOT }A) \text{ AND }B)\text{ OR }(B \text{ AND } C \text{ AND } (\text{NOT } D))
+    \end{equation}
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
