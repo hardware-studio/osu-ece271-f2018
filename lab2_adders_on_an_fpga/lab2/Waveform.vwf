@@ -1,8 +1,8 @@
 /*<simulation_settings>
-<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=verilog --write_settings_files=off lab2 -c lab2 --vector_source="D:/dev/ece271-272/lab2_adders_on_an_fpga/Waveform.vwf" --testbench_file="D:/dev/ece271-272/lab2_adders_on_an_fpga/simulation/qsim/Waveform.vwf.vt"</ftestbench_cmd>
-<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=verilog --write_settings_files=off lab2 -c lab2 --vector_source="D:/dev/ece271-272/lab2_adders_on_an_fpga/Waveform.vwf" --testbench_file="D:/dev/ece271-272/lab2_adders_on_an_fpga/simulation/qsim/Waveform.vwf.vt"</ttestbench_cmd>
-<fnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=on --flatten_buses=off --tool=modelsim_oem --format=verilog --output_directory="D:/dev/ece271-272/lab2_adders_on_an_fpga/simulation/qsim/" lab2 -c lab2</fnetlist_cmd>
-<tnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=off --flatten_buses=off --timescale=1ps --tool=modelsim_oem --format=verilog --output_directory="D:/dev/ece271-272/lab2_adders_on_an_fpga/simulation/qsim/" lab2 -c lab2</tnetlist_cmd>
+<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=verilog --write_settings_files=off lab2 -c lab2 --vector_source="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/Waveform.vwf" --testbench_file="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/simulation/qsim/Waveform.vwf.vt"</ftestbench_cmd>
+<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=verilog --write_settings_files=off lab2 -c lab2 --vector_source="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/Waveform.vwf" --testbench_file="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/simulation/qsim/Waveform.vwf.vt"</ttestbench_cmd>
+<fnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=on --flatten_buses=off --tool=modelsim_oem --format=verilog --output_directory="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/simulation/qsim/" lab2 -c lab2</fnetlist_cmd>
+<tnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=off --flatten_buses=off --timescale=1ps --tool=modelsim_oem --format=verilog --output_directory="D:/dev/ece271-272/lab2_adders_on_an_fpga/lab2/simulation/qsim/" lab2 -c lab2</tnetlist_cmd>
 <modelsim_script>onerror {exit -code 1}
 vlib work
 vlog -work work lab2.vo
@@ -155,16 +155,6 @@ SIGNAL("B3")
 	PARENT = "";
 }
 
-SIGNAL("Cin")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
 SIGNAL("Z0")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
@@ -220,9 +210,8 @@ TRANSITION_LIST("A0")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 20.0;
-		LEVEL 1 FOR 40.0;
-		LEVEL 0 FOR 140.0;
+		LEVEL 1 FOR 50.0;
+		LEVEL 0 FOR 150.0;
 	}
 }
 
@@ -231,9 +220,8 @@ TRANSITION_LIST("A1")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 20.0;
-		LEVEL 1 FOR 40.0;
-		LEVEL 0 FOR 140.0;
+		LEVEL 1 FOR 50.0;
+		LEVEL 0 FOR 150.0;
 	}
 }
 
@@ -242,9 +230,8 @@ TRANSITION_LIST("A2")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 20.0;
-		LEVEL 1 FOR 40.0;
-		LEVEL 0 FOR 140.0;
+		LEVEL 1 FOR 50.0;
+		LEVEL 0 FOR 150.0;
 	}
 }
 
@@ -253,9 +240,8 @@ TRANSITION_LIST("A3")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 20.0;
-		LEVEL 1 FOR 40.0;
-		LEVEL 0 FOR 140.0;
+		LEVEL 1 FOR 50.0;
+		LEVEL 0 FOR 150.0;
 	}
 }
 
@@ -264,7 +250,8 @@ TRANSITION_LIST("B0")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 200.0;
+		LEVEL 1 FOR 50.0;
+		LEVEL 0 FOR 150.0;
 	}
 }
 
@@ -282,20 +269,11 @@ TRANSITION_LIST("B2")
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 1 FOR 200.0;
-	}
-}
-
-TRANSITION_LIST("B3")
-{
-	NODE
-	{
-		REPEAT = 1;
 		LEVEL 0 FOR 200.0;
 	}
 }
 
-TRANSITION_LIST("Cin")
+TRANSITION_LIST("B3")
 {
 	NODE
 	{
@@ -423,7 +401,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Cin";
+	CHANNEL = "Z0";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 8;
@@ -432,7 +410,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Z0";
+	CHANNEL = "Z1";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 9;
@@ -441,7 +419,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Z1";
+	CHANNEL = "Z2";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 10;
@@ -450,7 +428,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Z2";
+	CHANNEL = "Z3";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 11;
@@ -459,19 +437,10 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Z3";
-	EXPAND_STATUS = COLLAPSED;
-	RADIX = Binary;
-	TREE_INDEX = 12;
-	TREE_LEVEL = 0;
-}
-
-DISPLAY_LINE
-{
 	CHANNEL = "Z4";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
-	TREE_INDEX = 13;
+	TREE_INDEX = 12;
 	TREE_LEVEL = 0;
 }
 

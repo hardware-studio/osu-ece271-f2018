@@ -18,7 +18,7 @@
 // the top level entity of the current Quartus project .The user can use this   
 // testbench to simulate his design using a third-party simulation tool .       
 // *****************************************************************************
-// Generated on "10/03/2018 13:18:01"
+// Generated on "10/03/2018 18:34:26"
                                                                                 
 // Verilog Test Bench (with test vectors) for design :                          lab2
 // 
@@ -37,7 +37,6 @@ reg B0;
 reg B1;
 reg B2;
 reg B3;
-reg Cin;
 // wires                                               
 wire Z0;
 wire Z1;
@@ -56,7 +55,6 @@ lab2 i1 (
 	.B1(B1),
 	.B2(B2),
 	.B3(B3),
-	.Cin(Cin),
 	.Z0(Z0),
 	.Z1(Z1),
 	.Z2(Z2),
@@ -71,39 +69,36 @@ end
 // A0
 initial
 begin
-	A0 = 1'b0;
-	A0 = #20000 1'b1;
-	A0 = #40000 1'b0;
+	A0 = 1'b1;
+	A0 = #50000 1'b0;
 end 
 
 // A1
 initial
 begin
-	A1 = 1'b0;
-	A1 = #20000 1'b1;
-	A1 = #40000 1'b0;
+	A1 = 1'b1;
+	A1 = #50000 1'b0;
 end 
 
 // A2
 initial
 begin
-	A2 = 1'b0;
-	A2 = #20000 1'b1;
-	A2 = #40000 1'b0;
+	A2 = 1'b1;
+	A2 = #50000 1'b0;
 end 
 
 // A3
 initial
 begin
-	A3 = 1'b0;
-	A3 = #20000 1'b1;
-	A3 = #40000 1'b0;
+	A3 = 1'b1;
+	A3 = #50000 1'b0;
 end 
 
 // B0
 initial
 begin
-	B0 = 1'b0;
+	B0 = 1'b1;
+	B0 = #50000 1'b0;
 end 
 
 // B1
@@ -115,19 +110,13 @@ end
 // B2
 initial
 begin
-	B2 = 1'b1;
+	B2 = 1'b0;
 end 
 
 // B3
 initial
 begin
 	B3 = 1'b0;
-end 
-
-// Cin
-initial
-begin
-	Cin = 1'b0;
 end 
 endmodule
 
