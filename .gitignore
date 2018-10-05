@@ -1,7 +1,8 @@
 # Quartus Prime Lite with DE10-Lite
-db
-incremental_db
-output_files
+db/
+incremental_db/
+output_files/
+simulation/
 
 # ==============================================================================
 # TeX
