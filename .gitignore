@@ -3,6 +3,8 @@ db/
 incremental_db/
 output_files/
 simulation/
+*.exe.stackdump
+*.qws
 
 # ==============================================================================
 # TeX
