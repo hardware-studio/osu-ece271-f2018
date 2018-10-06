@@ -188,9 +188,24 @@ This lab brought us from simple schematic design of lab 1 to a more complex desi
 \begin{enumerate}
     \item Explain how you would convert your 4-bit adder to a 4-bit adder/subtractor.
 
+    Subtraction in decimal system is the same as addition with the opposite of the second operand: $A_{10} - B_{10} = A_{10} + (-B_{10})$. Similarly, we can subtract a binary number $B_2$ from $A_2$ by adding $A_2$ with the two's complement of $B_2$: $A_2 - B_2 = A_2 + (-B_2)$. Therefore, add an inverter to every bit of $B$ before it goes to a logic gate, and we will have a 4-bit subtractor.
+
     \item In your own words, explain what pull resistors do in the FPGA.
 
+    The pull-up and pull-down setups of a circuit should have a switch in it. For example, a pull-up resistor setup means a resistor ties the input pin of the FPGA to $V_{CC}$ and a switch connecting the circuit to GND. Similarly, a pull-down resistor setup means a resistor ties the input pin of the FPGA to GND and a switch connecting the circuit to $V_{CC}$. See Figure~\ref{figure:5} below
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{pull_resistor_setups.png}
+        \caption{Pull-up and pull-down resistor setups and their truth tables}
+        \label{figure:5}
+    \end{figure}
+
+    The outcome is different between the two setups. However, a significant thing here is that by using pull resistors, we effectively make sure that the input \textit{always} receives \textit{either 0 or 1---nothing in between and thus no floating value}. The resistors significantly reduce the noise the input pin of the FPGA would take and guarantee the FPGA would never take a floating value as an input.
+
     \item Explain your selection for the pullmode for the pin connected to the least-significant full-adder's carry-in.
+
+    We pulled least-significant full-adder's carry-in to GND because when we add the very first bits of the two binary numbers together, there is always no initial carry-in (or $C_{in0} = 0$).
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
