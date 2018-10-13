@@ -343,39 +343,87 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Finite State Machines}
 
-[Opening paragraph, if any]
-
 \begin{enumerate}
   %%%%%%%%%%%%%%%%%%%%
   % FSM Design Examples
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{FSM Design Example}
 
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{moore_and_mealy_fsm.png}
+    \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
+    \label{figure:12}
+  \end{figure}
+
+  Synchronous sequential circuits can be drawn like in Figure~\ref{figure:12}. These forms are called \textit{finite state machines (FSMs)}. An FSM has $M$ inputs, $N$ outputs, and $k$ bits of state and receives a clock with an optional reset signal.
+
+  According to the example problem from the textbook, the steps to design an FSM are as follow:
+
+  \begin{enumerate}
+    \item Draw a block diagram or a black box of the FSM
+    \item Sketch the \textit{state transition diagram} and complete it based on the problem statements
+    \item Rewrite the transition diagram as a \textit{state transition table}
+    \item Express the states and the outputs in Boolean equations from the table using \textit{binary encodings}. Note that everything has to be encoded in binary numbers
+    \item Simplify the Booleans equations using Boolean algebra or Karnaugh maps
+    \item Sketch and complete the circuit for the FSM
+  \end{enumerate}
+
   %%%%%%%%%%%%%%%%%%%%
   % State Encodings
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{State Encodings}
+
+  State and output encodings are selected arbitrary. Minimizing logic gates in a circuit requires the "best" encoding method. However, there is no simple way to find this "best" method as the number of states is large. In the end, the best encoding choice depends on the specific FSM.
 
   %%%%%%%%%%%%%%%%%%%%
   % Moore and Mealy Machines
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Moore and Mealy Machines}
 
+  On one hand, Moore machines are FSMs whose outputs depends only on the state of the system (outputs labeled inside the circles). On the other hand, Mealy machines are FSMs whose outputs depends on inputs as well as the current state (outputs labeled on the arc and outside of the circles).
 
   %%%%%%%%%%%%%%%%%%%%
   % Factoring State Machines
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Factoring State Machines}
 
+  When designing complex FSMs, it is useful to break down a large FSM into multiple simpler state machines such that the output of some machines is the inputs of others. This method of hierarchy and modularity is called \textit{factoring} of state machines.
+
   %%%%%%%%%%%%%%%%%%%%
   % Deriving an FSM from a Schematic
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Deriving an FSM from a Schematic}
 
+  This process if necessary, for example, when taking on an incomplete documented project or reverse-engineering a system. Follow these guidelines to derive an FSM from a schematic:
+
+  \begin{enumerate}
+    \item Examine circuit, stating inputs, outputs, and state bits
+    \item Write next state and output equations
+    \item Create next state and output tables
+    \item Reduce the next state table to eliminate unreachable states
+    \item Assign each valid state bit combination a name
+    \item Rewrite next state and output tables with state names
+    \item Draw state transition diagram
+    \item State in words what the FSM does
+  \end{enumerate}
+
   %%%%%%%%%%%%%%%%%%%%
   % FSM Review
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{FSM Review}
+
+  FSMs provide a powerful way to systematically design a sequential circuit from written specifications. Use the following procedure to design an FSM:
+
+  \begin{enumerate}
+    \item Identify inputs and outputs
+    \item Sketch a state transition diagram
+    \item For a Moore machine, write a state transition table and then write an output table
+    \item For a Mealy state machine, write a combined state transition and output table
+    \item Select state encodings---the selection affects the hardware design
+    \item Write Boolean equations for the next state and output logic
+    \item Sketch the circuit schematic
+  \end{enumerate}
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
