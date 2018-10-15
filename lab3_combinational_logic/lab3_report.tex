@@ -46,11 +46,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
+Seven-segment displays are used in various electronic devices, such as microwave, digital clock, and video cassette players. They are one of the most popular choices to display numbers and most letters on digital devices due to their easy programming and user interfaces.
+
+A seven-segment display has seven LEDs arranged in the shape of the digit 8. Each segment has its own signal name, and all segments connect to the decoder separately. There can be an additional LEDs which has a circle shape next to the digit, representing a decimal place. Figure~\ref{figure:1} shows what a seven-segment display looks like.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.25\textwidth]{seven_segment_display.png}
+  \caption{The LED segments and their order in a seven-segment display\cite{WikimediaSevenSegment}}
+  \label{figure:1}
+\end{figure}
+
+In this lab, I and Ben designed a seven-segment display capable of displaying hexadecimal digits. We made a decoder that convert a 4-bit binary number into a single digit on the seven-segment display. The LED layout of each of the hexadecimal digits is as follows in Figure~\ref{figure:2}:
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{seven_segment_hexadecimal.png}
   \caption{Seven-segment display showing hexadecimal digits \cite{EEStackExchangeSevenSegmentHex}}
-  \label{figure:1}
+  \label{figure:2}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,7 +75,7 @@
   \centering
   \includegraphics[width=0.5\textwidth]{lab3_block_diagram.png}
   \caption{Block diagram}
-  \label{figure:2}
+  \label{figure:3}
 \end{figure}
 
 \begin{table}[h]
@@ -95,14 +108,14 @@
   \centering
   \includegraphics[width=\textwidth]{lab3_schematic.png}
   \caption{A schematic for the seven-segment display decoder. Due to the large difference between the size of the schematic and the available space, an image with higher resolution has been uploaded \href{https://i.imgur.com/jaLoZg9.jpg}{here}.}
-  \label{figure:3}
+  \label{figure:4}
 \end{figure}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{lab3_simulation.png}
   \caption{Simulation waveform of the program with each 10-nanosecond interval representing a hexadecimal digit}
-  \label{figure:4}
+  \label{figure:5}
 \end{figure}
 
 \includepdf[page=-]{lab3_karnaugh_maps}
