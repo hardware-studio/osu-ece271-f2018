@@ -431,7 +431,7 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Timing of Sequential Logic}
 
-[Opening paragraph, if any]
+The aperture of a sequential element is defined by a \textit{setup} time and a \textit{hold} time, before and after the clock edge, respectively. Similar to static discipline which limits the user to using logic levels outside of the forbidden zone, the \textit{dynamic discipline} limits the usage of signals that change outside of the aperture time.
 
 \begin{enumerate}
   %%%%%%%%%%%%%%%%%%%%
@@ -439,30 +439,47 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{The Dynamic Discipline}
 
+  A synchronous sequential circuit not only has a functional specification but also a timing specification. For the circuit to sample its inputs correctly, the inputs must have stabilized at least some \textit{setup time}, $t_{\text{setup}}$, before the rising edge of the clock and must remain stable for at least some \textit{hold time}, $t_{\text{hold}}$, after the rising edge of the clock.
+
+  \begin{equation} \label{equation:1}
+    \text{aperture time} = \text{setup time} + \text{hold time} = t_{\text{setup}} + t_{\text{hold}}
+  \end{equation}
+
+  The \textit{dynamic discipline} states that the inputs of a synchronous sequential circuit must be stable during the setup and hold aperture time around the clock edge.
+
   %%%%%%%%%%%%%%%%%%%%
   % System Timing
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{System Timing}
+
+  The \textit{clock period or cycle time}, $T_c$ is the time between rising edges of a repetitive clock signal. Its reciprocal, $f_c = \frac{1}{T_c}$, is the \textit{clock frequency}---measured in units of Hertz (Hz). The higher the frequency is, the more work the system can accomplish.
 
   %%%%%%%%%%%%%%%%%%%%
   % Clock Skew
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Clock Skew}
 
+  \textit{Clock skew} happens when the clock does not reach all registers at exactly the same time. A common reason for this variation is that the wires from the clock source to different registers can be of different lengths, resulting in different delays.
+
+  When doing timing analysis, it is recommended to consider the worst-case scenario to make sure the circuit will time correctly under all circumstances.
+
   %%%%%%%%%%%%%%%%%%%%
   % Metastability
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Metastability}
+
+  It is not always possible to guarantee that the input to a sequential circuit is stable during the aperture time, especially when the input arrives from the external world.
+
+  When a flip-flop samples an input that is changing during its aperture, the output $Q$ may momentarily take on a voltage between 0 and $V_{DD}$ that is in the forbidden zone. This is called a \textit{metastable} state. Eventually, the flip-flop will resolve the output to a \textit{stable state} of either 0 or 1.
+
+  The \textit{resolution time}, denoted $t_{\text{res}}$ is the time required to resolve a stable state during the clock cycle. $t_{\text{res}}$ is a random variable.
 
   %%%%%%%%%%%%%%%%%%%%
   % Synchronizers
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Synchronizers}
 
-  %%%%%%%%%%%%%%%%%%%%
-  % Derivation of Resolution Time
-  %%%%%%%%%%%%%%%%%%%%
-  \item \textbf{Derivation of Resolution Time}
+  Asynchronous inputs to digital systems from the real world is inevitable (for example, human input). These asynchronous inputs can lead to metastability in the system if they are not handled correctly. To guarantee good logic levels, all asynchronous inputs should be passed through \textit{synchronizers}---a device that receives an asynchronous input $D$ and a clock $CLK$ and produces an output $Q$ within a bounded amount of time.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -470,10 +487,33 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Parallelism}
 
+The speed of the system is characterized by the latency and throughout of information moving through it.
+
+A \textit{token} is a group of inputs that are processed to reduce a group of outputs.
+
+The \textit{latency} of a system is the time required for one token to pass through the system from start to end.
+
+The \textit{Throughput} is the number of tokens that can be produced per unit time. The throughput can be improved by processing several tokens at the same time. This is called \textit{parallelism}. There are two forms of parallelism:
+
+\begin{itemize}
+  \item \textit{Spatial parallelism}: Multiple copies of hardware are provided so that multiple tasks can be done at the same time.
+  \item \textit{Temporal parallelism}: Commonly call \textit{pipelining}. A task is broken down into stages, like an assembly line, allowing multiple tasks to spread across the stages.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Summary
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
+
+A sequential circuit is a circuit whose output depends on the current value \textit{and} the previous value of the inputs. Due to this nature, sequential circuits have memory which may explicitly remember the previous inputs or may distill the values into states of the system.
+
+Two fundamental bulding blocks of sequential logic are latches and flip-flops. SR latch and D latch are two common types of latches. A D flip-flop consists of two D latches connecting to each other through a node and a clock. An $N$-bit register is a bank of $N$ flip-flops that share a common CLK input so that all bits of the register are updated at the same time. There are also many other types of flip-flops, including enabled flip-flop (with an extra ENABLE input) and resettable flip-flop (with an extra RESET input).
+
+Since sequential circuits are not the same as combinational circuits, their outputs cannot be determined just by looking at the current state of the inputs. Synchronous logic design and dynamic discipline allow analyzing and designing sequential logic more easily. Two common types of synchronous sequential circuit are finite state machine and pipeline.
+
+Finite state machines provide a powerful way to systematically design a sequential circuit from written specifications.
+
+Timing is an essential aspect of sequential circuit design. This chapter covers the dynamic discipline and a few issues in the timing of circuits, such as clock skew and metastability.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Grey Box Exploration
@@ -484,12 +524,22 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % First grey box
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item The first blurb is on page ...
+  \item The first blurb is on page 113, which states \textit{Some people call a latch open or closed rather than transparent or opaque. However, we think those terms are ambiguous---does} open \textit{mean transparent like an open door, or opaque, like an open circuit?}.
+
+  This is an interesting question. People interpret words differently, and so a solution to the ambiguity is to have a guideline where terminologies that are easy to confuse are explained in details.
+
+  Some people find transparent-opaque make more sense people they relate the latch with a physical door---being transparent means open door, allowing data to flow through and vice versa.
+
+  Other people, however, find open-closed make more sense because they relate the latch with the open-closed concept of a circuit---open circuit means no signal can flow from one end to the other and vice versa.
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Second grey box
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item The second blurb is on page ...
+  \item The second blurb is on page 121, which states $t_{\text{pcq}}$ \textit{stands for the time of propagation from clock to Q, where Q indicates the output of a synchronous sequential circuit.} $t_{\text{ccq}}$ \textit{stands for the time of contamination from clock to Q. These are analogous to} $t_{\text{pd}}$ \textit{and} $t_{\text{cd}}$ \textit{in combinational logic.}
+
+  Recall that $t_{\text{pd}}$ in combinational logic is the propagation delay of the system and that $t_{\text{cd}}$ is the contamination delay of the system. Similarly, in sequential circuit, $t_{\text{pcq}}$ is the propagation delay and $t_{\text{ccq}}$ is the contamination delay.
+
+  In combinational circuits, propagation delay is the maximum time from when an input changes until the output(s) reach their final value, and contamination delay is the minimum time from when an input changes until any of the outputs starts to change its value. The propagation and contamination delay in sequential logic design are exactly the same---they just have different notations.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -497,32 +547,32 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Figures}
 
-Two figures were selected from this chapter for special recognition. Figure[...] was selected ...
+Two figures were selected from this chapter for special recognition. Figure~\ref{figure:13} was selected because it concisely shows the key difference between Moore FSM and Mealy FSM. In Moore FSM, the output depends only on the current state of the system. On the other hand, Mealy FSM's output depends not only on the current state of the system but also the raw inputs (notice the wire connecting the inputs with the output logic).
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.5\textwidth]{de_morgan_gates.png}
-%     \caption{De Morgan equivalent gates and their truth tables}
-%     \label{figure:9}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{moore_and_mealy_fsm.png}
+    \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
+    \label{figure:13}
+\end{figure}
 
-Figure[...] was selected ...
+Figure~\ref{figure:14} was selected because it shows how a register was constructed. An N-bit register is just a series of N flip-flops that share a common CLK input. When the clock raises its edge, all output bits of the register are changed simultaneously to the values of their corresponding input bits. In other occasions, the output bits retain their previous values. It is quite interesting and surprising to know that registers are constructed from flip-flops.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.25\textwidth]{eight_input_xor}
-%     \caption{An eight-input XOR constructed from seven two-input XOR}
-%     \label{figure:10}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.25\textwidth]{register_4bit.png}
+    \caption{Inside of a 4-bit register}
+    \label{figure:14}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Example Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Problems}
 
-See the attached images on the next pages.
+See the attached images on the next four pages.
 
-% \includepdf[page=-]{example_problems}
+\includepdf[page=-]{example_problems}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary
@@ -621,12 +671,16 @@ All definitions were found from the Google search engine, typing "define state" 
 
 See the attached image on the next page.
 
-% \includepdf[page=-]{interview_question}
+\includepdf[page=-]{interview_question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reflection
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reflection}
+
+This chapter is more challenging than chapter 2 because sequential circuits have more time aspect attached to it---the previous value of the inputs must be known in order to determine the output. Now that I've learned combinational and sequential logic design, I've become more confident in my ability to build circuits from simple logic gates. Before I began to take this class, I thought only about the functional specifications of a circuit. Nevertheless, I have come to realize that timing is also extremely important, especially in sequential logic.
+
+To me, the Finite State Machine section was the most fun to read. Although I had a little background of embedded systems, being able to systematically design a sequential circuit from written specifications still sounds fascinating to me. Finally, my least favorite section was the Timing of Sequential Logic (even though I learned a lot from the section).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Questions for Lecture
@@ -634,15 +688,9 @@ See the attached image on the next page.
 \section{Questions for Lecture}
 
 \begin{enumerate}
-  \item QUESTION 1
-  \item QUESTION 2
-  \item QUESTION 3
+  \item Do the registers in microcontrollers work the same way as ones mentioned in this chapter? if not, how are they different from each other?
+  \item Can you provide two examples of a finite state machine, preferrably a Moore machine and a Mealy machine?
+  \item If SR latch is inconsistent when both S and R are asserted, what purpose could it serve besides making D latches?
 \end{enumerate}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{ieeetr}
-\bibliography{references}
 
 \end{document}
