@@ -57,7 +57,7 @@ A seven-segment display has seven LEDs arranged in the shape of the digit 8. Eac
   \label{figure:1}
 \end{figure}
 
-In this lab, I and Ben designed a seven-segment display capable of displaying hexadecimal digits. We made a decoder that convert a 4-bit binary number into a single digit on the seven-segment display. The LED layout of each of the hexadecimal digits is as follows in Figure~\ref{figure:2}:
+In this lab, I and Ben design a seven-segment display capable of displaying hexadecimal digits. We make a decoder that convert a 4-bit binary number into a single digit on the seven-segment display. The LED layout of each of the hexadecimal digits is as follows in Figure~\ref{figure:2}:
 
 \begin{figure}[h]
   \centering
@@ -66,10 +66,14 @@ In this lab, I and Ben designed a seven-segment display capable of displaying he
   \label{figure:2}
 \end{figure}
 
+\newpage
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Design
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design}
+
+We use four switches to represent 4-bit binary numbers as inputs and a seven-segment display---or 7 LED segments---as outputs. To make outputs change accordingly (and correctly) to different values of the inputs, our objective is to use combinational logic to program a seven-segment display decoder on the FPGA. A visual representation of our objective is illustrated by the block diagram in Figure~\ref{figure:3}.
 
 \begin{figure}[h]
   \centering
@@ -77,6 +81,10 @@ In this lab, I and Ben designed a seven-segment display capable of displaying he
   \caption{Block diagram}
   \label{figure:3}
 \end{figure}
+
+Since the LED segments on the display are active-low---which means the pins will be active if low voltage is applied to it, the LED segment will turn on if the output signal is $0$ and turn off if the signal is $1$. Using the segment layout and digit syntax in Figures~\ref{figure:1} and~\ref{figure:2}, we construct the following truth table:
+
+\newpage
 
 \begin{table}[h]
   \centering
@@ -104,12 +112,24 @@ In this lab, I and Ben designed a seven-segment display capable of displaying he
   \label{table:1}
 \end{table}
 
+Using Table~\ref{table:1}, the digit $0$ in hexadecimal system is equivalent to $0000$ in binary system. Segments A through F in the decoder are lit up, and segment G will be turned off---this is exactly what Figure~\ref{figure:2} illustrates. The remaining rows of the table are interpreted in the same way.
+
+From Table~\ref{table:1}, we can write a sum-of-product form for each of the segments using their minterms. \textbf{Note that even though the segments are active-low, the Boolean equations still use rows with output 1 (since they are the minterms, and minterms always use 1).}
+
+We want to simplify the Boolean equation of each of the segments as much as possible so that we can use minimal hardware when building the circuit of the decoder. Therefore, we use Karnaugh maps to simplify the Boolean equations of the segments, as demonstrated on the next page.
+
+\includepdf[page=-]{lab3_karnaugh_maps}
+
+There are a few Boolean terms that appears in more than one Boolean equations, such as $\bar{A}B\bar{C}\bar{D}$ and $\bar{A}\bar{B}\bar{C}D$ in segments A and D. Hence, the logic gates can be reused, which further simplifies the hardware needed to build the circuit. A schematic of the circuit is as in Figure~\ref{figure:4} below.
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{lab3_schematic.png}
   \caption{A schematic for the seven-segment display decoder. Due to the large difference between the size of the schematic and the available space, an image with higher resolution has been uploaded \href{https://i.imgur.com/jaLoZg9.jpg}{here}.}
   \label{figure:4}
 \end{figure}
+
+The schematic of the decoder is indeed complicated, yet it can be easier read when divided into smaller groups. A simpler way to read the schematic is that there are seven group of combinational logic gates and 8 input buses (4 bits of input and their inversions).
 
 \begin{figure}[h]
   \centering
@@ -118,7 +138,7 @@ In this lab, I and Ben designed a seven-segment display capable of displaying he
   \label{figure:5}
 \end{figure}
 
-\includepdf[page=-]{lab3_karnaugh_maps}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Results
