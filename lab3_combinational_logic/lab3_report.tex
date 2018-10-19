@@ -131,6 +131,13 @@ There are a few Boolean terms that appears in more than one Boolean equations, s
 
 The schematic of the decoder is indeed complicated, yet it can be easier read when divided into smaller groups. A simpler way to read the schematic is that there are seven group of combinational logic gates and 8 input buses (4 bits of input and their inversions).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+
+We test the schematic on the simulator. For each 10-ns time interval, we try a hexadecimal digit on the inputs: 0 for 0--10.0 ns, 1 for 10.0 ns--20.0 ns, 2 for 20.0 ns--30.0 ns, and so on. We obtain the following results:
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{lab3_simulation.png}
@@ -138,12 +145,9 @@ The schematic of the decoder is indeed complicated, yet it can be easier read wh
   \label{figure:5}
 \end{figure}
 
+After running the simulation, we observe that when the input is $0$, the output signal (segments A through G) is $0000001$; when the input is $1$, the output signal is $1001111$; and so on. The simulation outputs are the same as expected the outputs in Table~\ref{table:1}.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Results
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Results}
+The seven-segment display behaves as expected when we upload the program to the FPGA. Therefore, the seven-segment display decoder is successfully implemented.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment Notes
@@ -155,6 +159,8 @@ The schematic of the decoder is indeed complicated, yet it can be easier read wh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Reflection}
 
+This lab was quite challenging when we approached it without the idea of logic simplification in mind. In fact, we couldn't figure out which direction to take to implement the decoder. However, when we took a step back and analyzed the problem carefully, we realized that this problem was just another truth-table-to-Boolean-equation simplification type of problems. Things became much easier after we constructed the truth table and Karnaugh maps. The rest of the problem was an easy technical process.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Study Questions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,6 +168,8 @@ The schematic of the decoder is indeed complicated, yet it can be easier read wh
 
 \begin{enumerate}
   \item When is a simulation necessary? Was it useful for this section?
+
+  When testing a program before deploying it into a real system, simulation is very important. A program without thorough testing could cause various problems, including breaking the system and/or causing the hardware to malfunction. Simulation process was quite useful for this section because we can anticipate what will happen when the program is uploaded to the real FPGA by analyzing the simulation waveform. We can fix program bugs and flaws before they even get into the FPGA. We believe that a program should go through a simulation process before going into a real system.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
