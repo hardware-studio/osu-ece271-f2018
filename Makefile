@@ -1,5 +1,5 @@
-LATEX = pdflatex
-PDFLATEXFLAGS = -halt-on-error
+PDFTEX = pdflatex
+PDFTEXFLAGS = -halt-on-error
 
 CHAPTER2_DIR = chapter2_combinational_logic_design
 CHAPTER3_DIR= chapter3_sequential_logic_design
@@ -18,22 +18,22 @@ ALL = \
 all: $(ALL)
 
 chapter2_report: $(CHAPTER2_DIR)/chapter2_report.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(CHAPTER2_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(CHAPTER2_DIR) $?
 
 chapter3_report: $(CHAPTER3_DIR)/chapter3_report.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(CHAPTER3_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(CHAPTER3_DIR) $?
 
 lab1_report: $(LAB1_DIR)/lab1_report.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(LAB1_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB1_DIR) $?
 
 lab2_report: $(LAB2_DIR)/lab2_report.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(LAB2_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB2_DIR) $?
 
 lab3_prelab: $(LAB3_DIR)/lab3_prelab.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(LAB3_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB3_DIR) $?
 
 lab3_report: $(LAB3_DIR)/lab3_report.tex
-	$(LATEX) $(PDFLATEXFLAGS) -output-directory $(LAB3_DIR) $?
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB3_DIR) $?
 
 .PHONY: clean
 
