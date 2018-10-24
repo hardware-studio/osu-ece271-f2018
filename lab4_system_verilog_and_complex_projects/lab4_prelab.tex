@@ -43,8 +43,18 @@ Lab 4 is the first lab implemented with a hardware description language. For thi
 
 \begin{enumerate}
   \item In your own words, what is a module?
+
+  A module is a standalone subsystem with inputs, outputs, and internal structures. It acts like a black box and can connect with other modules to make up a grand system that servers particular purposes.
+
   \item What is a Bus? How do you designate one is System Verilog?
+
+  A Bus is a single wire running across a common signal of all---for example, modules---and connecting each of the signal into that wire. I think of the bus seats as the common signal of the modules and the bus floor as the Bus wire connecting all signals into a single Bus signal.
+
+  In Verilog, a Bus can be designated by being connected to multiple signal across the system.
+
   \item What does the term Logic mean in System Verilog?
+
+  A \textit{Logic} in Verilog can be used either as a \textit{wire} or as a \textit{register}. Logic blocks are generally busses, and the way they are used determines whether they are wires or registers.
 \end{enumerate}
 
 \end{document}
