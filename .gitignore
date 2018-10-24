@@ -5,6 +5,8 @@ output_files/
 simulation/
 *.exe.stackdump
 *.qws
+_*
+modelsim/
 
 # ==============================================================================
 # TeX
