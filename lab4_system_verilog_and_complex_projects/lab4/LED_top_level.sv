@@ -26,7 +26,7 @@ module LED_top_level( //Every SV File starts with module and ends with endmodule
         .out2(p_out2),
         .out3(p_out3),
         .out4(p_out4),
-        .out5(p_out5),
+        .out5(p_out5)
     );
 
     Decoder D0(
