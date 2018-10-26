@@ -1,5 +1,5 @@
 PDFTEX = pdflatex
-PDFTEXFLAGS = -halt-on-error
+PDFTEXFLAGS = -halt-on-error -shell-escape
 
 CHAPTER2_DIR = chapter2_combinational_logic_design
 CHAPTER3_DIR = chapter3_sequential_logic_design
