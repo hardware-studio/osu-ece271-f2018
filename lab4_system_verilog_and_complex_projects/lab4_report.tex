@@ -33,7 +33,7 @@
 
     \vfill
 
-    November 5\textsuperscript{th}, 2018
+    October 31\textsuperscript{st}, 2018
 
     Grading TA: Edgar Perez
 
@@ -139,7 +139,7 @@ Finally, we upload the project to the real FPGA. We do thorough tests on the rea
 
 It took me approximately 20 minutes to get used to writing SystemVerilog on Quartus Prime. The combinational logic portion of the project was quite easy. I started to prefer writing SystemVerilog to sketching schematic because I could simplify tedious graphic circuit contruction using a few lines in a \textit{case} block of SystemVerilog.
 
-I think this lab was an easy yet a necessary lab for students to become more familiar with SystemVerilog and how to use HDL to "write" circuits.
+I think this lab was an easy yet a necessary lab for students to become more familiar with SystemVerilog and how to use HDL to "write" circuits. I plan to program circuits in SystemVerilog from now on because it is more consistent than wiring the components in a graphical interface.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Study Questions
@@ -148,6 +148,10 @@ I think this lab was an easy yet a necessary lab for students to become more fam
 
 \begin{enumerate}
   \item Describe how to control a 7-seg display using a state machine and lighting each digit one at a time.
+
+  Let each state be a seven-segment display of the array of 6 displays on the FPGA, so there are six separate states: S0 corresponding to Seg70, S1 corresponding to Seg71, S2 corresponding to Seg72, S3 corresponding to Seg73, S4 corresponding to Seg74, and S5 corresponding to Seg75.
+
+  The inputs are the switches and the push buttons.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -338,11 +342,5 @@ module Decoder(
 
 endmodule
 \end{minted}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \bibliographystyle{ieeetr}
-% \bibliography{references}
 
 \end{document}
