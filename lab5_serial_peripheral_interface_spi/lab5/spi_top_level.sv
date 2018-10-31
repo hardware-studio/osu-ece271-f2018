@@ -12,7 +12,7 @@ module SPItopLevel(
         .data(switch),
         .out_parser(parser_in)
     );
-    
+
     Parser p(
         .in(parser_in),
         .out0(parser_out0),
