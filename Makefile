@@ -3,7 +3,7 @@ PDFTEXFLAGS = -halt-on-error -shell-escape
 
 CHAPTER2_DIR = chapter2_combinational_logic_design
 CHAPTER3_DIR = chapter3_sequential_logic_design
-CHAPTER4_DIR = chapter4_hardware_description_languages
+CHAPTER5_DIR = chapter5_digital_building_blocks
 LAB1_DIR = lab1_basic_combinational_logic
 LAB2_DIR = lab2_adders_on_an_fpga
 LAB3_DIR = lab3_combinational_logic
@@ -28,8 +28,8 @@ chapter2_report: $(CHAPTER2_DIR)/chapter2_report.tex
 chapter3_report: $(CHAPTER3_DIR)/chapter3_report.tex
 	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(CHAPTER3_DIR) $?
 
-chapter4_report: $(CHAPTER4_DIR)/chapter4_report.tex
-	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(CHAPTER4_DIR) $?
+chapter5_report: $(CHAPTER5_DIR)/chapter5_report.tex
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(CHAPTER5_DIR) $?
 
 lab1_report: $(LAB1_DIR)/lab1_report.tex
 	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB1_DIR) $?
