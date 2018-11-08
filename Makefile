@@ -8,17 +8,22 @@ LAB1_DIR = lab1_basic_combinational_logic
 LAB2_DIR = lab2_adders_on_an_fpga
 LAB3_DIR = lab3_combinational_logic
 LAB4_DIR = lab4_system_verilog_and_complex_projects
+LAB5_DIR = lab5_serial_peripheral_interface
+DESIGN_PROJECT_DIR = design_project/doc
 
 ALL = \
 		chapter2_report \
 		chapter3_report \
-		chapter4_report \
+		chapter5_report \
 		lab1_report \
 		lab2_report \
 		lab3_prelab \
 		lab3_report \
 		lab4_prelab \
-		lab4_report
+		lab4_report \
+		lab5_prelab \
+		lab5_report \
+		design_project
 
 all: $(ALL)
 
@@ -48,6 +53,15 @@ lab4_prelab: $(LAB4_DIR)/lab4_prelab.tex
 
 lab4_report: $(LAB4_DIR)/lab4_report.tex
 	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB4_DIR) $?
+
+lab5_prelab: $(LAB5_DIR)/lab5_prelab.tex
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB5_DIR) $?
+
+lab5_report: $(LAB5_DIR)/lab5_report.tex
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB5_DIR) $?
+
+design_project: $(DESIGN_PROJECT_DIR)/design_project.tex
+	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(DESIGN_PROJECT_DIR) $?
 
 .PHONY: clean
 
