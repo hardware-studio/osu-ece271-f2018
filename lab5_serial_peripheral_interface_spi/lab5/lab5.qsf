@@ -98,9 +98,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE spi.sv
 
 set_location_assignment PIN_C10 -to switch
 set_location_assignment PIN_B8 -to button
-set_location_assignment PIN_A8 -to leds[0]
-set_location_assignment PIN_A9 -to leds[1]
-set_location_assignment PIN_A10 -to leds[2]
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
