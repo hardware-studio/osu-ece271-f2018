@@ -136,6 +136,10 @@ We upload the project to the real FPGA. We do thorough tests on the real board, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Reflection}
 
+This lab turned out to be easier than I expected. I spent a lot of time trying to implement the SPI module. But thanks to the bit shifting operator available in SystemVerilog, I was able to implement the SPI module using only one line of sequential logic (see the \nameref{section:Appendix}).
+
+I had issues when I tried to simulate the project using ModelSim. For some reasons, the waveforms of the output didn't change when I changed the input. I tried all the combination of the 2-bit input ($00$, $01$, $10$, and $11$), but the first three seven-segment display (which were supposed to change) stayed at $Z$ and the remaining stayed at $0$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Study Questions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
