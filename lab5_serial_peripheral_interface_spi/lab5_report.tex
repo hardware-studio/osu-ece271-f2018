@@ -48,15 +48,83 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
+\textit{Serial Peripheral Interface} (\textit{SPI}) is a method of transmitting multiple bits of data using minimal hardware. When two pieces of hardware communicates with each other via SPI, they need to share a clock. At every rising edge of the clock, the data is transmitted from one device to the other.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.75\textwidth]{spi.png}
+  \caption{The waveform diagram of the master and the slave in SPI communication protocol \cite{SparkFunSpi}}
+  \label{figure:1}
+\end{figure}
+
+In Figure~\ref{figure:1}, at every rising edge of $SCK$ (clock from master), the data $MOSI$ (master-out slave-in) is transmitted from the master device to the slave device. After 8 rising edges, an 8-bit data will have been transmitted---in this case, $11001010$ from master to slave.
+
+When the data goes over the designated number of bits, in this case 8 bits, the SPI will always "forget" the left most bit and transmit the latest chunk of bits.
+
+In this lab, I and Ben designed a SPI protocol using the DE10-Lite FPGA. We used a button as a clock signal, a switch as the data line, and six seven-segment displays as the indicator of the data transmission from the SPI.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Design
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design}
 
+The system takes in two inputs: one for the clock signal, controlled by a push button, and one for the data, controlled by a switch. This 2-bit input then goes to the SPI. The SPI protocol always outputs an 8-bit binary into a parser to pass into a seven-segment display decoder. Finally, the decoder outputs to the LEDs, indicating the current data being transmitted by the SPI protocol, as illustrated by the block diagram in Figure~\ref{figure:2} below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.75\textwidth]{lab5_block_diagram.png}
+  \caption{Block diagram}
+  \label{figure:2}
+\end{figure}
+
+The SPI module takes in the clock signal and the data. It outputs an 8-bit to the parser, and every time the clock rises, it shifts the current value of the output 1 bit to the left and then add the input bit (data) to the right.
+
+\begin{equation} \label{equation:1}
+  output = (output << 1) + data
+\end{equation}
+
+For example, let the initial value of the output is $00000000$, if the data is $1$ when the clock rises, the output then becomes
+
+\begin{equation} \label{equation:2}
+  output = (00000000 << 1) + 1 = 00000001
+\end{equation}
+
+Suppose for the next 7 times the clock rises, the data is $1100110$, then $output = 11100110$.
+
+If the clock rises again, $output$ will be overflow. In this case, the SPI will "forget" the oldest bit (the most significant bit), the first $1$. Suppose when the clock rises again, the data is a $1$. Then, $output = 11001101$.
+
+The SPI module has the same design as explained above. We reuse the parser and the decoder modules, thus there is nothing new in these modules. However, for the sake of clarity, I will explain the functionality of the parser and the decoder below.
+
+The parser takes in an 8-bit binary number, and SystemVerilog automatically converts numbers between binary, hex, and decimal systems. Since the SPI result is always an 8-bit number, its maximum value is a 3-digit decimal $255$. Therefore, we only need the first three seven-segment displays. The parser outputs three 4-bit numbers, which are then taken in as inputs for the decoders. The decoder module uses the values in Table~\ref{table:1} to convert these numeric inputs to LED signals.
+
+See the \nameref{section:Appendix} for the code.
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{ | c | c | c | c | c | c | c | c | c | }
+  \hline
+  \textbf{Decimal}                                                       & \textbf{Binary}                                                         & \textbf{Seg\textsubscript{A}} & \textbf{Seg\textsubscript{B}} & \textbf{Seg\textsubscript{C}} & \textbf{Seg\textsubscript{D}} & \textbf{Seg\textsubscript{E}} & \textbf{Seg\textsubscript{F}} & \textbf{Seg\textsubscript{G}} \\ \hline
+  0                                                                      & 0000                                                                    & 0                             & 0                             & 0                             & 0                             & 0                             & 0                             & 1                             \\ \hline
+  1                                                                      & 0001                                                                    & 1                             & 0                             & 0                             & 1                             & 1                             & 1                             & 1                             \\ \hline
+  2                                                                      & 0010                                                                    & 0                             & 0                             & 1                             & 0                             & 0                             & 1                             & 0                             \\ \hline
+  3                                                                      & 0011                                                                    & 0                             & 0                             & 0                             & 0                             & 1                             & 1                             & 0                             \\ \hline
+  4                                                                      & 0100                                                                    & 1                             & 0                             & 0                             & 1                             & 1                             & 0                             & 0                             \\ \hline
+  5                                                                      & 0101                                                                    & 0                             & 1                             & 0                             & 0                             & 1                             & 0                             & 0                             \\ \hline
+  6                                                                      & 0110                                                                    & 0                             & 1                             & 0                             & 0                             & 0                             & 0                             & 0                             \\ \hline
+  7                                                                      & 0111                                                                    & 0                             & 0                             & 0                             & 1                             & 1                             & 1                             & 1                             \\ \hline
+  8                                                                      & 1000                                                                    & 0                             & 0                             & 0                             & 0                             & 0                             & 0                             & 0                             \\ \hline
+  9                                                                      & 1001                                                                    & 0                             & 0                             & 0                             & 0                             & 1                             & 0                             & 0                             \\ \hline
+  \end{tabular}
+  \caption{Conversion table between decimal, 4-bit binary, and seven-segment signals}
+  \label{table:1}
+\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Results
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
+
+We upload the project to the real FPGA. We do thorough tests on the real board, and everything seems to be working as intended. Therefore, we have successfully implemented an SPI transmission protocol using SystemVerilog.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment Notes
@@ -83,10 +151,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Appendix} \label{section:Appendix}
 
+\begin{center}
+  \textbf{lab5.qsf} (Pin Assignment)
+\end{center}
+
+\inputminted[breaklines, firstline=38, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{text}{lab5/lab5.qsf}
+
+\begin{center}
+  \textbf{SpiTopLevel.sv}
+\end{center}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{lab5/SpiTopLevel.sv}
+
+\begin{center}
+  \textbf{Spi.sv}
+\end{center}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{lab5/Spi.sv}
+
+\begin{center}
+  \textbf{Parser.sv}
+\end{center}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{lab5/Parser.sv}
+
+\begin{center}
+  \textbf{Decoder.sv}
+\end{center}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{lab5/Decoder.sv}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography
+%Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \bibliographystyle{ieeetr}
-% \bibliography{references}
+\bibliographystyle{ieeetr}
+\bibliography{references}
 
 \end{document}
