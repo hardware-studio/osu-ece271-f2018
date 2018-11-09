@@ -4,8 +4,8 @@ module SpiTopLevel(
     output logic [6:0] seg70, seg71, seg72, seg73, seg74, seg75
 );
 
-    logic [7:0] parser_in;
-    logic [3:0] parser_out0, parser_out1, parser_out2;
+    logic [7:0] parser_in = 0;
+    logic [3:0] parser_out0, parser_out1, parser_out2 = 0;
 
     Spi s(
         .clk(button),

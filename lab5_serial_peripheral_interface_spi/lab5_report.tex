@@ -59,7 +59,7 @@
 
 In Figure~\ref{figure:1}, at every rising edge of $SCK$ (clock from master), the data $MOSI$ (master-out slave-in) is transmitted from the master device to the slave device. After 8 rising edges, an 8-bit data will have been transmitted---in this case, $11001010$ from master to slave.
 
-When the data goes over the designated number of bits, in this case 8 bits, the SPI will always "forget" the left most bit and transmit the latest chunk of bits.
+When the data goes over the designated number of bits, in this case 8 bits, the SPI will always ``forget" the left most bit and transmit the latest chunk of bits.
 
 In this lab, I and Ben designed a SPI protocol using the DE10-Lite FPGA. We used a button as a clock signal, a switch as the data line, and six seven-segment displays as the indicator of the data transmission from the SPI.
 
@@ -91,7 +91,7 @@ For example, let the initial value of the output is $00000000$, if the data is $
 
 Suppose for the next 7 times the clock rises, the data is $1100110$, then $output = 11100110$.
 
-If the clock rises again, $output$ will be overflow. In this case, the SPI will "forget" the oldest bit (the most significant bit), the first $1$. Suppose when the clock rises again, the data is a $1$. Then, $output = 11001101$.
+If the clock rises again, $output$ will be overflow. In this case, the SPI will ``forget" the oldest bit (the most significant bit), the first $1$. Suppose when the clock rises again, the data is a $1$. Then, $output = 11001101$.
 
 The SPI module has the same design as explained above. We reuse the parser and the decoder modules, thus there is nothing new in these modules. However, for the sake of clarity, I will explain the functionality of the parser and the decoder below.
 
@@ -124,7 +124,22 @@ See the \nameref{section:Appendix} for the code.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-We upload the project to the real FPGA. We do thorough tests on the real board, and everything seems to be working as intended. Therefore, we have successfully implemented an SPI transmission protocol using SystemVerilog.
+We compile and simulate the project on ModelSim and obtain the following waveforms:
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{lab5_simulation.png}
+  \caption{Simulation waveforms of a few test examples. \href{https://i.imgur.com/XwiPTrR.jpg}{High-resolution image}}
+  \label{figure:3}
+\end{figure}
+
+\newpage
+
+The button is the clock, and the switch is the data. From 200 ns to 1000 ns, the output of the SPI (e.g. \textit{parse\_in}) increases from 1, 3, 7, 15, 31, 63, 127, to 255. This is consistent with the expected SPI output (1, 11, 111, 1111, 11111, 111111, 1111111, 11111111) when adding 1 on each clock edge.
+
+Similarly, from 1000 ns to 1900 ns, the system keeps receiving 0, and so the SPI module keeps adding 0 to the least significant position and ``forgetting" the most significant bit. Specifically, the output of the SPI changes as follows: 11111111 (255), 11111110 (254), 11111100 (252), 11111000 (248), 11110000 (240), 11100000 (224), 11000000 (192), 100000000 (128), 00000000 (0). From these simulation results, we believe our source code is working as intended.
+
+We upload the project to the real FPGA. We do thorough tests on the real board, and everything also seems to be working as intended. Therefore, we have successfully implemented an SPI transmission protocol using SystemVerilog.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment Notes
@@ -138,7 +153,9 @@ We upload the project to the real FPGA. We do thorough tests on the real board, 
 
 This lab turned out to be easier than I expected. I spent a lot of time trying to implement the SPI module. But thanks to the bit shifting operator available in SystemVerilog, I was able to implement the SPI module using only one line of sequential logic (see the \nameref{section:Appendix}).
 
-I had issues when I tried to simulate the project using ModelSim. For some reasons, the waveforms of the output didn't change when I changed the input. I tried all the combination of the 2-bit input ($00$, $01$, $10$, and $11$), but the first three seven-segment display (which were supposed to change) stayed at $Z$ and the remaining stayed at $0$.
+I had issues when I tried to simulate the project using ModelSim. For some reasons, the waveforms of the output didn't change when I changed the input. Ben helped me find a solution for the issue, though, by initializing the local variables to 0 right after declaring them. For example,
+
+\mint{systemverilog}|logic [7:0] tmp_out = 0;|
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Study Questions
@@ -148,6 +165,16 @@ I had issues when I tried to simulate the project using ModelSim. For some reaso
 \begin{enumerate}
   \item In your own words, describe the functionality of 4 wire SPI.
 
+  A 4-wire SPI system connects the master and the slave(s) via four wires: \textit{SCK}, \textit{MOSI}, \textit{MISO}, and \textit{SS}. \textbf{SCK} is the \textbf{S}erial \textbf{C}loc\textbf{K} signal---generated by the master---which runs through all devices, sharing the same clock to everything else in the system. \textbf{MOSI} is \textbf{M}aster-\textbf{O}ut \textbf{S}lave-\textbf{I}n, which transmits the data from the master to a slave. Conversely, \textbf{MISO} (\textbf{M}aster-\textbf{I}n \textbf{S}lave-\textbf{O}ut) transmits the data from a slave to the master. \textbf{SS} (\textbf{S}lave \textbf{S}elect) is more tricky because it enables the master to communicate with multiple slaves. In this 4-wire SPI setup, \textit{SS} of the master connects to all \textit{SS} pins of the slaves. By this way, to transmit the data to a certain slave, the master must overflow the data. The \textit{first} chunk of data will be tramistted to the \textit{last} slave.
+
+  The 4-wire SPI setup can be summarized by Figure~\ref{figure:4} below:
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{spi_4_wires.png}
+    \caption{An implementation of a 4-wire SPI with $n$ slaves \cite{SparkFunSpi}}
+    \label{figure:4}
+  \end{figure}
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
