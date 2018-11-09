@@ -23,7 +23,7 @@ ALL = \
 		lab4_report \
 		lab5_prelab \
 		lab5_report \
-		design_project
+		design_project_report
 
 all: $(ALL)
 
@@ -60,13 +60,18 @@ lab5_prelab: $(LAB5_DIR)/lab5_prelab.tex
 lab5_report: $(LAB5_DIR)/lab5_report.tex
 	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(LAB5_DIR) $?
 
-design_project: $(DESIGN_PROJECT_DIR)/design_project.tex
+design_project_report: $(DESIGN_PROJECT_DIR)/design_project_report.tex
 	$(PDFTEX) $(PDFTEXFLAGS) -output-directory $(DESIGN_PROJECT_DIR) $?
 
 .PHONY: clean
 
 clean:
 	find . -type f \( -name "*_report.pdf" -or -name "*_prelab.pdf" \
+		-or -name "*.acn" -or -name "*.acr" -or -name "*.alg" \
 		-or -name "*.aux" -or -name "*.bbl" -or -name "*.blg" \
-		-or -name "*.log" -or -name "*.out" -or -name "*.fdb_latexmk" \
-		-or -name "*.fls" -or -name "*.synctex.gz" \) -exec rm -f {} \;
+		-or -name "*.fdb_latexmk" -or -name "*.fls" -or -name "*.glg" \
+		-or -name "*.glo" -or -name "*.idx" -or -name "*.ind" \
+		-or -name "*.ist" -or -name "*.lof" -or -name "*.log" \
+		-or -name "*.lot" -or -name "*.out" -or -name "*.synctex.gz" \
+		-or -name "*.toc" \) -exec rm -f {} \;
+	find . -type d -name "_minted*" -prune -exec rm -rf {} \;
