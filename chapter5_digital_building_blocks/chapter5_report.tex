@@ -1,17 +1,22 @@
 \documentclass[12pt]{article}
 
 \usepackage{amsmath}
+\numberwithin{figure}{subsection}
+\numberwithin{table}{subsection}
+\numberwithin{equation}{subsection}
+
 \usepackage{array}
 \usepackage{caption}
 \usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
+
 \usepackage{graphicx}
+\graphicspath{{figures/}}
+
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage{multirow}
 \usepackage{pdfpages}
 \usepackage[section]{placeins}
-
-\graphicspath{{figures/}}
 
 \title{ECE 271: Chapter 5 Reading Report}
 \author{Phi Luu}
@@ -48,40 +53,228 @@ Arithmetic circuits are the central building blocks of computers. They enable co
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Addition}
 
+  Addition is one of the most common operations in digital systems. The \textit{half adder} and the \textit{full adder} mentioned in earlier chapters are two of the digital building blocks that perform addition.
+
+  \begin{enumerate}
+    %%%%%%%%%%
+    % Half Adder
+    %%%%%%%%%%
+    \item \textbf{Half Adder}
+
+    The most basic example of a half adder is a 1-bit half adder. The half adder takes in two inputs---two binary bit---and add them together to output the sum and the carry out, as demonstrated by Figure~\ref{fig:1_bit_half_adder} below:
+
+    \newpage
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.75\textwidth]{half_adder_1_bit.png}
+      \caption{A 1-bit half adder's block schematic, truth table, and Boolean equations (respectively)}
+      \label{fig:1_bit_half_adder}
+    \end{figure}
+
+    Similar to decimal addition, binary addition "carries" a 1 to the next column (next half adder) when the result overflows---in this case, the result of $1 + 1$. Using the truth table provided in Figure~\ref{fig:1_bit_half_adder}, the Boolean equation of $S$ and $C_{out}$ can be solved as $S = A \oplus B$ (XOR logic) and $C_{out} = AB$ (AND logic).
+
+    By putting multiple half adders together, a multi-adder system is formed. The $C_{out}$ (carry out) of the less significant bit is the carry in of the more significant bit---in other words, from right to left---just like decimal addition. However, the half adder lacks the $C_{in}$ (carry in) input. The \textit{full adder} solves this problem.
+
+    %%%%%%%%%%
+    % Full Adder
+    %%%%%%%%%%
+    \item \textbf{Full Adder}
+
+    As described in the half adder section, the \textit{full adder} takes in three inputs---two binary bits $A$ and $B$ and one carry-in bit $C_{in}$---and produces two inputs, one carry-out bit $C_{out}$ and one sum bit $S$.
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.75\textwidth]{full_adder_1_bit.png}
+      \caption{A 1-bit full adder's block schematic, truth table, and Boolean equations (respectively)}
+      \label{fig:1_bit_full_adder}
+    \end{figure}
+
+    The addition of the full adder is exactly like that of the half adder, but the full adder takes in an extra carry-in bit and adds three 1-bit binary numbers $A$, $B$, and $C_{in}$. Using Boolean simplification methods (K-maps or pure Boolean algebra), the Boolean equations of the sum $S$ and the carry out $C_{out}$ can be expressed by Figure~\ref{fig:1_bit_full_adder}. Knowing the Boolean equations, the designer can easily implement the half adder and the full adder using combinational logic.
+
+    %%%%%%%%%%
+    % Carry Propagate Adder
+    %%%%%%%%%%
+    \item \textbf{Carry Propagate Adder}
+
+    An $N$-bit adder sums two $N$-bit inputs, $A$ and $B$, and a carry in $C_{in}$ to produce an $N$-bit result $S$ and a carry out $C_{out}$. The \textit{carry propagate adder} propagates the carry out of one bit to the next. The block schematic of the carry propagate adder is similar to that of the full adder, but the carry propagate adder takes in $N$-bit inputs instead of 1-bit, as illustrated by Figure~\ref{fig:carry_propagate_adder} below:
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.25\textwidth]{carry_propagate_adder.png}
+      \caption{A carry propagate adder's block schematic}
+      \label{fig:carry_propagate_adder}
+    \end{figure}
+
+    %%%%%%%%%%
+    % Ripple-Carry Adder
+    %%%%%%%%%%
+    \item \textbf{Ripple-Carry Adder}
+
+    The simplest way to build an $N$-bit carry propagate adder is to chain together $N$ full adders. As stated in the full adder section, the $C_{out}$ of the less significant bit is the $C_{in}$ of the more significant bit (carrying from right to left). This is called the \textit{ripple-carry adder}. The advantage of this system is its simplicity---a large system can be built by chaining multiple identical modules. However, its disadvantage is its speed---as $C_N$ depends on $C_{N - 1}$, which depends on $C_{N - 2}$, which depends on $C_{N - 3}$, and so on until $C_0$. The block schematic of a 32-bit ripple-carry adder is as illustrated by Figure~\ref{fig:ripple_carry_adder} below:
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=0.75\textwidth]{ripple_carry_adder.png}
+      \caption{A ripple-carry adder's block schematic}
+      \label{fig:ripple_carry_adder}
+    \end{figure}
+
+    The delay of the adder, $t_{ripple}$, grows linearly with the number of bits, as given in Equation~\ref{eq:ripple_carry_adder_delay}, where $t_{FA}$ is the delay of a full adder:
+
+    \begin{equation} \label{eq:ripple_carry_adder_delay}
+      t_{ripple} = N t_{FA}
+    \end{equation}
+
+    %%%%%%%%%%
+    % Carry-Lookahead Adder
+    %%%%%%%%%%
+    \item \textbf{Carry-Lookahead Adder}
+
+    The \textit{carry-lookahead adder} solves the ripple-carry adder by dividing the adder into \textit{blocks} and providing circuitry to quickly determine the carry out of a block as soon as the carry in is known. It \textit{looks ahead} across the blocks rather than waiting to ripple through all the full adders inside a block. For example, a 32-bit adder can be divided into eight 4-bit blocks.
+
+    Carry-lookahead adders use \textit{generate} (G) and \textit{propagate} (P) signals that describe how a column or block determines the carry out.
+
+    The $i$th column of an adder \textit{generates} a carry if it produces a carry out regardless of the value of the carry in. According to the truth table in Figure~\ref{fig:1_bit_full_adder}, $C_{out} = 1$ regardless of the value of $C_{in}$ if and only if $A = B = 1$. Thus, $G_i = A_i B_i$ in the $i$th column of the an adder.
+
+    The $i$th column is said to \textit{propagate} a carry if it produces a carry out whenever there is a carry in. Using Figure~\ref{fig:1_bit_full_adder} once again, $C_{out} = 1$ when $C_{in} = 1$ if and only if $A = 1$ or $B = 1$. Thus, $P_i = A_i + B_i$.
+
+    Putting $G_i$ and $P_i$ together, the $i$th column of an adder will generate a carry out $C_i$ if either generates a carry, $G_i$, or propagates a carry in, $P_i C_{i - 1}$. In equation form,
+
+    \begin{equation}
+      C_i = A_i B_i + \left( A_i + B_i \right) C_{i - 1} =  G_i + P_i C_{i - 1}
+    \end{equation}
+
+    Using the block generate and propagate signals, the carry out of the block, $C_i$ can be computed by the carry in to the block, $C_j$,
+
+    \begin{equation}
+      C_i = G_{i:j} + P_{i:j} C_j
+    \end{equation}
+
+    The delay of an $N$-bit adder divided into $k$-bit block is as follows:
+
+    \begin{equation}
+      t_{CLA} = t_{pg} + t_{pg\_block} + \left( \frac{N}{k} - 1 \right) t_{AND\_OR} + kt_{FA}
+    \end{equation}
+
+    %%%%%%%%%%
+    % Prefix Adder
+    %%%%%%%%%%
+    \item \textbf{Prefix Adder}
+
+    \textit{Prefix adders} extend the generate and propagate logic of the carry-lookahead adder to perform addition even faster. The strategy of the prefix adder is to compute the carry in $C_{i - 1}$ for each column $i$ as fast as possible, then to compute the sum using
+
+    \begin{equation} \label{equation:1.2.5}
+      S_i = \left( A_i \oplus B_i \right) \oplus C_{i - 1}
+    \end{equation}
+
+    The delay of an $N$-bit prefix adder is
+
+    \begin{equation} \label{equation:1.2.6}
+      t_{PA} = t_{pg} + \log_2{N \left( t_{pg\_prefix} \right)} + t_{XOR}
+    \end{equation}
+  \end{enumerate}
+
   %%%%%%%%%%%%%%%%%%%%
   % Subtraction
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Subtraction}
+
+  Subtraction is just a form of addition where a number adds to a negative number. Mathematically, in decimal system, $A - B = A + \left( -B \right)$.
+
+  In binary system, to compute $Y = A - B$, first create the two's complement of $B$: invert the bits of $B$ to obtain $\overline{B}$ and add 1 to get $-B = \overline{B} + 1$. Hence, $Y = A - B = A + \overline{B} + 1$. This sum can be performed with a single carry propagate adder adding $A$ and $\overline{B}$ with $C_{in} = 1$.
 
   %%%%%%%%%%%%%%%%%%%%
   % Comparators
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Comparators}
 
+  A \textit{comparator} determines whether a binary number is equal, greater than, or less than another binary number. A comparator receives two $N$-bit binary numbers $A$ and $B$. There are two common types of comparators:
+
+  \begin{enumerate}
+    \item An \textit{equality comparator} produces a single output indicating whether $A$ is equal to $B$. A 4-bit equality comparator is illustrated by Figure~\ref{fig:4_bit_equality_comparator} below.
+      \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.5\textwidth]{equality_comparator_4_bits.png}
+        \caption{A 4-bit equality comparator's (a) symbol and (b) schematic}
+        \label{fig:4_bit_equality_comparator}
+      \end{figure}
+    \item A \textit{magnitude comparator} produces one or more outputs indicating the relative values of $A$ and $B$. It checks whether the corresponding bits in each column of $A$ and $B$ are equal using XOR gates. The numbers are equal if all of the columns are equal. Figure~\ref{fig:n_bit_magnitude_comparator} shows the symbol of an $N$-bit magnitude comparator.
+      \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.125\textwidth]{magnitude_comparator_n_bits.png}
+        \caption{An $N$-bit magnitude comparator}
+        \label{fig:n_bit_magnitude_comparator}
+      \end{figure}
+  \end{enumerate}
+
   %%%%%%%%%%%%%%%%%%%%
   % ALU
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{ALU}
+
+  \textit{Arithmetic/Logical Unit} (\textit{ALU}) combines a variety of mathematical and logical operations into a single unit. For example, a typical ALU might perform addition, subtraction, magnitude comparison, AND, and OR operations. The ALU forms the heart of most computer systems.
+
+  Figure~\ref{fig:alu_symbol_and_operations} shows the symbol for an $N$-bit ALU with $N$-bit inputs and outputs. The ALU also receives a control signal $F$ that specifies which function to perform.
+
+  \newpage
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{alu_symbol_and_operations.png}
+    \caption{An ALU's symbol and operations}
+    \label{fig:alu_symbol_and_operations}
+  \end{figure}
 
   %%%%%%%%%%%%%%%%%%%%
   % Shifters and Rotators
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Shifters and Rotators}
 
+  \textit{Shifters} and \textit{rotators} move bits and multiply or divide by powers of 2. Shifters shift a binary number left or right by a specified number of steps. \textit{Logical shifter} and \textit{Arithmetic shifter} are two common used shifters:
+
+  \begin{enumerate}
+    \item Logical shifter shifts the number to the left (LSL) or right (LSR) and fills empty spots with 0's. For example, $11001 \text{ LSR } 2 = 00110$; $11001 \text{ LSL } 2 = 00100$.
+    \item Arithmetic shifter works similarly to the logical shifter, but \textbf{on right shifts fills the most significant bits with the copy of the old most significant bit (MSB)}. This is useful for multiplying and dividing signed numbers. \textbf{Arithmetic shift left is the same as logical shift left}. For example, $11001 \text{ ASR } 2 = 11110$; $11001 \text{ ASL } 2 = 00100$.
+  \end{enumerate}
+
+  Rotators rotate number in circle such that empty spots are filled with bits shifted off the other end. For example, $11001 \text{ ROR } 2 = 01110$; $11001 \text{ ROL } 2 = 00111$.
+
+  The operators $<<$, $>>$, and $>>>$ indicate shift left, logical shift right, and arithmetic shift right, respectively. An $N$-bit shifter can be built from $N$ $N\text{:}1$ multiplexer.
+
+  A left shift is a special case of multiplication: \textbf{a left shift by} $\mathbf{N}$ \textbf{bits multiplies the number by} $\mathbf{2^N}$. For example, $000011_2 << 4 = 110000_2$ is equivalent to $3_{10} \cdot 2^4 = 48_{10}$.
+
+  An arithmetic right shift is a special case of division: \textbf{an arithmetic right shift by} $\mathbf{N}$ \textbf{bits divides the number by} $\mathbf{2^N}$. For example, $11100_2 >>> 2 = 11111_2$ is equivalent to $-4_{10} \div 2^2 = -1_{10}$.
+
   %%%%%%%%%%%%%%%%%%%%
   % Multiplication
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Multiplication}
+
+  Multiplication of binary numbers is similar to decimal multiplication but involves only 0's and 1's. The \textit{partial products} are formed by multiplying a single digit of the multiplier with the entire multiplicand, as illustrated by Figure~\ref{fig:decimal_vs_binary_multiplication}.
+
+  \newpage
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{decimal_vs_binary_multiplication.png}
+    \caption{Decimal and binary multiplications are performed in the same way}
+    \label{fig:decimal_vs_binary_multiplication}
+  \end{figure}
 
   %%%%%%%%%%%%%%%%%%%%
   % Division
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Division}
 
-  %%%%%%%%%%%%%%%%%%%%
-  % Further Reading
-  %%%%%%%%%%%%%%%%%%%%
-  \item \textbf{Further Reading}
+  Binary division can be performed using the following algorithm for $N$-bit unsigned numbers in range $\left[ 0, 2^{N - 1} \right]$:
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{division_algorithm.png}
+  \end{figure}
+
+  The \textit{partial remainder} $R$ is initialized to 0. The most significant bit of the dividend $A$ then becomes the least significant bit of $R$. The divisor $B$ is repeatedly subtracted from this partial remainder to determine whether it fits. If the difference $D$ is negative (i.e. the sign bit of $D$ is 1), then the quotient bit $Q_i$ is 0 and the difference is discarded. Otherwise, $Q_i$ is 1, and the partial remainder is updated to be the difference. In any event, the partial remainder is then doubled (left-shifted by one column), the next most significant bit of $A$ becomes the least significant bit of $R$, and the process repeats. The result satisfies $\frac{A}{B} = Q + \frac{R}{B}$.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,16 +282,73 @@ Arithmetic circuits are the central building blocks of computers. They enable co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Number Systems}
 
+Computers operate not only on unsigned and signed integers but also on fixed- and floating-point numbers that represent non-integers.
+
 \begin{enumerate}
   %%%%%%%%%%%%%%%%%%%%
   % Fixed-Point Number Systems
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Fixed-Point Number Systems}
 
+  \textit{Fixed-point notation} has an implied \textit{binary point} between the integer and fraction bits, analogous to the decimal point between the integer and fraction digits of an ordinary decimal number. The implied binary point usually divides the binary number into two equal chunk of bits. The more significant chunk (the chunk on the left) can be converted to decimal using powers of 2 with positive exponent.. Conversely, the less significant chunk (the chunk on the right) can be converted to decimal using powers of 2 with negative exponents. Figure~\ref{fig:fixed_point_notation_example} shows a conversion process of a 8-bit fixed-point binary number to a decimal real number.
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.4\textwidth]{fixed_point_notation_example.png}
+    \caption{Fixed-point notation of 6.75 with four integer bits and four fraction bits}
+    \label{fig:fixed_point_notation_example}
+  \end{figure}
+
+  Signed fixed-point numbers works for both two's complement or sign/magnitude notation. In sign/magnitude form, the most significant bit is used to indicate the sign. The two's complement representation is formed by inverting the bits of the absolute value and adding a 1 to the least significant (rightmost) bit. In the example in Figure~\ref{fig:fixed_point_notation_example}, the least significant bit position is in the $2^{-4}$ column.
+
   %%%%%%%%%%%%%%%%%%%%
   % Floating-Point Number Systems
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Floating-Point Number Systems}
+
+  Floating-point numbers are analogous to scientific notation. They overcome the limitation of having a constant number of integer and fractional bits, allowing the representation of very large and very small numbers. Like scientific notation, floating-point numbers have a \textit{sign}, \textit{mantissa} (M), \textit{base} (B), and \textit{exponent} (E). For example, the number $4.1 \times 10^3$ is the decimal scientific notation for $4100$. It has a mantissa of $4.1$, a base of $10$, and an exponent of $3$. 32 bits can be used to represent 1 sign bit, 8 exponent bits, and 23 mantissa bits.
+
+  The IEEE floating-point standard has special cases to represent 0 (zero), $\pm \infty$ (positive and negative infinity), and NaN (Not a Number), as showed in Table~\ref{tab:ieee_floating_point_special_notations}
+
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{ | c | c | c | c | }
+    \hline
+    \textbf{Number} & \textbf{Sign} & \textbf{Exponent} & \textbf{Fraction}       \\ \hline
+    0               & X             & 00000000          & 00000000000000000000000 \\ \hline
+    $\infty$        & 0             & 11111111          & 00000000000000000000000 \\ \hline
+    $- \infty$      & 1             & 11111111          & 00000000000000000000000 \\ \hline
+    NaN             & X             & 11111111          & Non-zero                \\ \hline
+    \end{tabular}
+    \caption{IEEE 754 floating-point notations for 0, $\pm \infty$, and NaN}
+    \label{tab:ieee_floating_point_special_notations}
+  \end{table}
+
+  A typical 32-bit floating-point number has 1 sign bit, 8 exponent bits, and 23 fraction bits. This is called the single-precision format. There is also another format, called the \textit{double-precision floating-point format},(or \textit{doubles}) which effectively provides a greater precision and greater range:
+
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+    \textbf{Format} & \textbf{Total Bits} & \textbf{Sign Bits} & \textbf{Exponent Bits} & \textbf{Fraction Bits} \\ \hline
+    single          & 32                  & 1                  & 8                      & 23                     \\ \hline
+    double          & 64                  & 1                  & 11                     & 52                     \\ \hline
+    \end{tabular}
+    \caption{Single- and double-precision floating-point formats}
+  \end{table}
+
+  To add two floating-point numbers, follow these steps:
+
+  \begin{enumerate}
+    \item Extract exponent and fraction bits
+    \item Prepend leading 1 to form the mantissa
+    \item Compare exponent
+    \item Shift smaller mantissa if necessary
+    \item Add mantissas
+    \item Normalize mantissa and adjust exponent if necessary
+    \item Round result
+    \item Assemble exponent and fraction back into floating-point number
+  \end{enumerate}
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,10 +362,32 @@ Arithmetic circuits are the central building blocks of computers. They enable co
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Counters}
 
+  An $N$-bit \textit{binary counter}, shown in Figure~\ref{fig:n_bit_counter_symbol_schematic}, is a sequential arithmetic circuit with clock and reset inputs and an $N$-bit output $Q$.
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{counter_symbol_schematic_n_bits.png}
+    \caption{An $N$-bit counter's (a) symbol and (b) schematic}
+    \label{fig:n_bit_counter_symbol_schematic}
+  \end{figure}
+
+  The reset initializes the output to 0. The counter then loops through all $2^N$ possible outputs in binary order, incrementing on every rising edge of the clock.
+
   %%%%%%%%%%%%%%%%%%%%
   % Shift Registers
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{Shift Registers}
+
+  A \textit{shift register} has a clock, a serial input $S_{in}$, a serial output $S_{out}$, and $N$ parallel outputs $Q_{N - 1 \text{:} 0}$, as shown in Figure~\ref{fig:shift_register_symbol_schematic}.
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{shift_register_symbol_schematic.png}
+    \caption{A shift register's (a) symbol and (b) schematic}
+    \label{fig:shift_register_symbol_schematic}
+  \end{figure}
+
+  A shift register can be constructed from $N$ flip-flops connected in series. Some shift registers also have a reset signal to initialize the flip-flops.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -220,7 +492,7 @@ Two figures were selected from this chapter for special recognition. Figure was 
 %     \centering
 %     \includegraphics[width=0.5\textwidth]{moore_and_mealy_fsm.png}
 %     \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
-%     \label{figure:13}
+%     \label{fig:13}
 % \end{figure}
 
 Figure was selected because
@@ -229,7 +501,7 @@ Figure was selected because
 %     \centering
 %     \includegraphics[width=0.25\textwidth]{register_4bit.png}
 %     \caption{Inside of a 4-bit register}
-%     \label{figure:14}
+%     \label{fig:14}
 % \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
