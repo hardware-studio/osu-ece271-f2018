@@ -45,7 +45,7 @@
 
 A seven-segment display is an electronic device that uses seven LEDs to display decimal digits (0 - 9). The seven segments are arranged like an italic 8 and have an alphabetical order, as illustrated by Figure~\ref{figure:1} below:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.25\textwidth]{seven_segment_display.png}
   \caption{The LED segments and their order in a seven-segment display. \href{https://commons.wikimedia.org/wiki/Seven_segment_display}{Source}}
@@ -54,7 +54,7 @@ A seven-segment display is an electronic device that uses seven LEDs to display 
 
 Depending on the input (0 - 9), some LEDs will turn on or off to form a pattern that illustrates the according decimal digit. Based on this concept, the input (0 - 9) can be represented as a 4-bit binary number---as circuits, logic, and computers operate in binary. The decimal digit patterns of the seven-segment display are as in Figure~\ref{figure:2} below:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.35\textwidth]{seven_segment_decimal_digits.png}
   \caption{Decimal digits illustrated by a seven-segment display. \href{https://commons.wikimedia.org/wiki/Seven_segment_display}{Source}}
@@ -65,7 +65,7 @@ Based on these concepts, a truth table converting 4-bit binary numbers to decima
 
 \newpage
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c | c | c || c | c | c | c | c | c | c | }
   \hline
@@ -88,7 +88,7 @@ Based on these concepts, a truth table converting 4-bit binary numbers to decima
 
 To better grasp the layout of the input, output, and the decoder, the block diagrams of the seven-segment display is shown in Figure~\ref{figure:3} below:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.75\textwidth]{seven_segment_display_block_diagram.png}
   \caption{The block diagram of the design}

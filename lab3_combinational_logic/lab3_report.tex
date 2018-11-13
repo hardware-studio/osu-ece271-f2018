@@ -50,7 +50,7 @@ Seven-segment displays are used in various electronic devices, such as microwave
 
 A seven-segment display has seven LEDs arranged in the shape of the digit 8. Each segment has its own signal name, and all segments connect to the decoder separately. There can be an additional LEDs which has a circle shape next to the digit, representing a decimal place. Figure~\ref{figure:1} shows what a seven-segment display looks like.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.25\textwidth]{seven_segment_display.png}
   \caption{The LED segments and their order in a seven-segment display\cite{WikimediaSevenSegment}}
@@ -59,7 +59,7 @@ A seven-segment display has seven LEDs arranged in the shape of the digit 8. Eac
 
 In this lab, I and Ben design a seven-segment display capable of displaying hexadecimal digits. We make a decoder that convert a 4-bit binary number into a single digit on the seven-segment display. The LED layout of each of the hexadecimal digits is as follows in Figure~\ref{figure:2}:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{seven_segment_hexadecimal.png}
   \caption{Seven-segment display showing hexadecimal digits \cite{EEStackExchangeSevenSegmentHex}}
@@ -75,7 +75,7 @@ In this lab, I and Ben design a seven-segment display capable of displaying hexa
 
 We use four switches to represent 4-bit binary numbers as inputs and a seven-segment display---or 7 LED segments---as outputs. To make outputs change accordingly (and correctly) to different values of the inputs, our objective is to use combinational logic to program a seven-segment display decoder on the FPGA. A visual representation of our objective is illustrated by the block diagram in Figure~\ref{figure:3}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{lab3_block_diagram.png}
   \caption{Block diagram}
@@ -86,7 +86,7 @@ Since the LED segments on the display are active-low---which means the pins will
 
 \newpage
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c | c | c | c | c | c | c | }
   \hline \rule{0em}{1.15em}
@@ -122,7 +122,7 @@ We want to simplify the Boolean equation of each of the segments as much as poss
 
 There are a few Boolean terms that appears in more than one Boolean equations, such as $\bar{A}B\bar{C}\bar{D}$ and $\bar{A}\bar{B}\bar{C}D$ in segments A and D. Hence, the logic gates can be reused, which further simplifies the hardware needed to build the circuit. A schematic of the circuit is as in Figure~\ref{figure:4} below.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{lab3_schematic.png}
   \caption{A schematic for the seven-segment display decoder. Due to the large difference between the size of the schematic and the available space, an image with higher resolution has been uploaded \href{https://i.imgur.com/jaLoZg9.jpg}{here}.}
@@ -138,7 +138,7 @@ The schematic of the decoder is indeed complicated, yet it can be easier read wh
 
 We test the schematic on the simulator. For each 10-ns time interval, we try a hexadecimal digit on the inputs: 0 for 0--10.0 ns, 1 for 10.0 ns--20.0 ns, 2 for 20.0 ns--30.0 ns, and so on. We obtain the following results:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{lab3_simulation.png}
   \caption{Simulation waveform of the program with each 10-nanosecond interval representing a hexadecimal digit}

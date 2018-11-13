@@ -59,7 +59,7 @@ We will also learn how to use Quartus Prime to design a ripple-carry adder from 
 
 A ripple-carry takes in three inputs---\textbf{operand1}, \textbf{operand2}, and the \textbf{carry-in}---and produces two outputs, the \textbf{sum} and the \textbf{carry-out}, as sketched in Figure~\ref{figure:1} below:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{full_adder_layout.png}
   \caption{The pin layout of a full ripple-carry adder for $A + B$}
@@ -72,7 +72,7 @@ The carry-in works similarly to when we carry the numbers when adding decimals t
 
 The block diagram showing the structure of the implementation is as follows:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{block_diagram.png}
   \caption{The block diagram showing the connections between the switches, the FPGA, and the LEDs in a 4-bit binary adder implementation}
@@ -110,7 +110,7 @@ Using Figure~\ref{figure:2}, the sum $SUM$ and the carry-out $C_{out}$ of a ripp
 
 A full-adder truth table used when adding two binary digit is shown in Table~\ref{table:1}. Extending this table to construct a partial 4-bit adder truth table (Table~\ref{table:2}), we obtain the following results:
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c | c | c | c | c | c | }
   \hline
@@ -128,7 +128,7 @@ A full-adder truth table used when adding two binary digit is shown in Table~\re
   \label{table:1}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c | c | c | c | c | }
   \hline
@@ -159,7 +159,7 @@ A full-adder truth table used when adding two binary digit is shown in Table~\re
 
 Before uploading the project to the real FPGA, we created a simulation waveform of the addition. Specifically, from Table~\ref{table:2} we picked \textbf{0b0000 + 0b0000} (first row), \textbf{0b0000 + 0b0100} (fifth row), \textbf{0b1000 + 0b0011} (tenth row), and \textbf{0b1111 + 0b1010} (thirteenth row) and tested them in the simulation. Figure~\ref{figure:4} shows the simulation result:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{simulation.png}
   \caption{Simulation results after testing first (0 - 10ns), fifth (20ns - 30ns), tenth (40ns - 50ns), and thirteenth (60ns - 70ns) rows of Table~\ref{table:2}}
@@ -194,7 +194,7 @@ This lab brought us from simple schematic design of lab 1 to a more complex desi
 
   The pull-up and pull-down setups of a circuit should have a switch in it. For example, a pull-up resistor setup means a resistor ties the input pin of the FPGA to $V_{CC}$ and a switch connecting the circuit to GND. Similarly, a pull-down resistor setup means a resistor ties the input pin of the FPGA to GND and a switch connecting the circuit to $V_{CC}$. See Figure~\ref{figure:5} below
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{pull_resistor_setups.png}
     \caption{Pull-up and pull-down resistor setups and their truth tables}

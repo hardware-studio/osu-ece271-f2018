@@ -63,7 +63,7 @@ The MAX 10 DE10-Lite is an FPGA, which means it will allow us to build and progr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design}
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{schematic.png}
   \caption{The schematic design of lab 1}
@@ -72,7 +72,7 @@ The MAX 10 DE10-Lite is an FPGA, which means it will allow us to build and progr
 
 Figure~\ref{figure:1} above shows a schematic constructed in Quartus Prime. The digital circuit includes a two-input XOR gate, a two-input OR gate, and a two-input AND gate. The output of the circuit is determined by the combination of these three gates, and the truth table of each gate is as follows:
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c || c | c | c || c | c | c | }
   \hline
@@ -90,7 +90,7 @@ Figure~\ref{figure:1} above shows a schematic constructed in Quartus Prime. The 
 
 Figure~\ref{figure:2} below shows the block diagram based on which the switches and the LEDs are mapped.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.75\textwidth]{block_diagram.png}
   \caption{The block diagram designed for this lab, showing the pin mapping}
@@ -120,7 +120,7 @@ We assign the inputs A, B, and C and the output Z in the Assignment Editor of Qu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-\begin{table}[h]
+\begin{table}[ht]
   \centering
   \begin{tabular}{ | c | c | c | c | c | }
   \hline
@@ -180,7 +180,7 @@ This lab was quite easy since it is the first lab session of the course. The lab
 
   Section 1.1 of the lab manual notes that FPGAs are different from CPLDs in hardware implementation. After referring to \href{https://www.quora.com/What-is-the-difference-between-CPLD-and-FPGA}{some materials}, it seems that FPGAs consist of "logic blocks" in a network of programmable interconnect. These "logic blocks" are made up of gates array, as opposed to Electrically Erasable Programmable Read-Only Memory (EEPROM) cells in CPLDs. CPLDs' architecture has switch-like interconnect, which allows the connections to travel through great distances and reduces the amount of routing between blocks. The main differences between FPGAs and CPLDs can also be seen in the following figure:
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{fpga_vs_cpld_architectures.png}
     \caption{FPGA's architecture (left) vs. CPLD's architecture (right). \href{https://www.quora.com/What-is-the-difference-between-CPLD-and-FPGA/answer/Gregory-James}{Source}}

@@ -44,7 +44,7 @@ A \textit{circuit} is a network that processes discrete-valued variables. A circ
 
 A circuit can be viewed as a black box similar to Figure~\ref{figure:1} below:
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.3\textwidth]{circuit.png}
   \caption{A circuit as a black box with inputs, outputs, and specifications}
@@ -90,7 +90,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
   Boolean equations deal with variables that are either TRUE or FALSE. Therefore, they are perfect for describing digital logic. Table~\ref{table:1} below shows the terminologies, notations, and truth tables of some commonly used Boolean equations.
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | >{\centering\arraybackslash}p{6em} | >{\centering\arraybackslash}p{2em} | >{\centering\arraybackslash}p{2em} | >{\centering\arraybackslash}p{4em} | }
     \hline \rule{0em}{1em}
@@ -134,7 +134,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
   A truth table of $N$ inputs contains $2^N$ rows. Each row is associated with a \textbf{minterm}---a product involving all inputs of the function---\textbf{that is TRUE for that row}. Take an unknown Boolean equation $Y$ as an example:
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c | c | c | c | }
     \hline \rule{0em}{1em}
@@ -165,7 +165,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
   This method is quite similar to the sum-of-products method. Each row is associated with a \textbf{maxterm}---a sum involving all inputs of the function---\textbf{that is FALSE for that row}. Reuse Table~\ref{table:2} and construct the maxterm columns:
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c | c | c | c | }
     \hline \rule{0em}{1em}
@@ -207,7 +207,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
   Table~\ref{table:4} below shows the axioms of Boolean algebra.
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c | c | c | c | }
     \hline \rule{0em}{1em}
@@ -231,7 +231,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
   Table~\ref{table:5} below shows the theorems of one variable in Boolean algebra.
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c | c | c | c | }
     \hline \rule{0em}{1em}
@@ -308,7 +308,7 @@ The functional specification of a circuit is often expressed as a truth table or
 
 A \textit{schematic} is a diagram of a digital circuit showing the elements and the wires that connect them together. For example, the schematic in Figure~\ref{figure:2} shows a possible hardware implementation of the logic function $Y = \bar{A}\bar{B}\bar{C} + A\bar{B}\bar{C} + A\bar{B}C$.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{schematic.png}
   \caption{A schematic of $Y = \bar{A}\bar{B}\bar{C} + A\bar{B}\bar{C} + A\bar{B}C$}
@@ -494,7 +494,7 @@ Boolean algebra is limited to 0's and 1's. However, real circuits can also have 
 
   A decoder has $N$ inputs and $2^N$ outputs. It asserts \textit{exactly one} of its output depending on the input combination. The outputs are called \textit{one-hot}, as exactly one output is ``hot" (HIGH) at a given time.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{decoder.png}
     \caption{A 2:4 decoder and its truth table.}
@@ -517,7 +517,7 @@ Previous subsections discuss the functional aspect of a circuit---that is, wheth
 
   Combinational logic is characterized by its \textit{propagation delay} and \textit{contamination delay}. The \textbf{propagation delay} $t_{pd}$ is the \textbf{maximum} time from when an input changes until the output(s) reach their final value. The \textbf{contamination delay} $t_{cd}$ is the \textbf{minimum} time from when an input changes until any outputs starts to change its value.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{propagation_contamination_delay.png}
     \caption{Propagation delay and contamination delay}
@@ -566,7 +566,7 @@ Timing is one of the most challenging issues in circuit design. The timing speci
 
   Let the clause ``YOU WILL GET A MILLION DOLLARS" be a Boolean variable, called $A$. Let the clause ``we'll send you a toothbrush in the mail" be another Boolean variable, called $B$. Below is the truth table of $A\text{ OR }B$.
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c | c | }
     \hline
@@ -610,7 +610,7 @@ Timing is one of the most challenging issues in circuit design. The timing speci
 
 Two figures were selected from this chapter for special recognition. Figure~\ref{figure:9} was selected for intuitively showing the logic gate equivalence of the De Morgan's theorem in Boolean algebra and briefly showing the bubble pushing method in logic simplification. The NAND gate is equivalent to an OR gate with inverted inputs. Similarly, a NOR gate is equivalent to an AND gate with inverted inputs. When using the bubble pushing method to simplify logic functions, the bubble (a NOT node) on the output side will be pushed to all of the inputs, and the gate will change accordingly (NAND to OR and NOR to AND).
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{de_morgan_gates.png}
   \caption{De Morgan equivalent gates and their truth tables}
@@ -619,7 +619,7 @@ Two figures were selected from this chapter for special recognition. Figure~\ref
 
 Figure~\ref{figure:10} was selected for showing the drastic hardware reduction using multilevel combinational logic. Normally, to construct an eight-input XOR gate, there would be 128 eight-input AND gates and one 128-input OR gate. Nevertheless, using the associative property of XOR, $A \oplus B \oplus C = (A \oplus B) \oplus C$, an eight-input XOR gate can also be produced by using a tree of seven two-input XOR gates. There is a huge difference in hardware monetary cost and hardware space cost between the two methods of implementation.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.25\textwidth]{eight_input_xor}
   \caption{An eight-input XOR constructed from seven two-input XOR}

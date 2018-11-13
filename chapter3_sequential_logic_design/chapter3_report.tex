@@ -44,7 +44,7 @@ Due to this nature, sequential logic has memory. The memory may explicitly remem
 
 The fundamental building block of memory is a \textit{bistable} element, an element with two stable states. To further understand what a bistable element looks like, consider Figure~\ref{figure:1}
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{bistable_elements.png}
   \caption{Cross-coupled inverter pair circuits}
@@ -62,7 +62,7 @@ When the power is first applied to the circuit, the initial state is unknown and
   \item \textbf{SR Latch}
   \textit{SR latch} is composed of two cross-doubled NOR gates, as shown in Figure~\ref{figure:2}. The latch has two inputs, $S$ and $R$, and has two outputs, $Q$ and $\bar{Q}$.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{sr_latch.png}
     \caption{Schematic of an SR latch}
@@ -119,7 +119,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   For the sake of abstraction and modularity, the SR latch is represented by the symbol in Figure~\ref{figure:3}
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.125\textwidth]{sr_latch_symbol.png}
     \caption{SR latch symbol}
@@ -135,7 +135,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   The D latch has two inputs: the \textit{data} input $D$ controlling what the next state should be and the \textit{clock} input $CLK$ controlling when the state should change. $D$ and $CLK$ then interact with each other via two two-input AND gates, and then connect in series with an SR latch, forming the D latch (see Figure~\ref{figure:4}).
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.3\textwidth]{d_latch_schematic.png}
     \caption{D latch schematic}
@@ -144,7 +144,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   After using the same case-by-case method as the SR latch, the truth table for the D latch is constructed per Table~\ref{table:2} below.
 
-  \begin{table}[h]
+  \begin{table}[ht]
     \centering
     \begin{tabular}{ | c | c || c | c | c || c | c | }
     \hline \rule{0em}{1.15em}
@@ -176,7 +176,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   A \textit{D flip-flop} (also known as \textit{master-slave flip-flop}, \textit{edge-triggered flip-flop}, \textit{positive edge-triggered flip-flop}) can be built from two back-to-back D latches controlled by complementary clocks, as shown in Figure~\ref{figure:5}. The first latch, $L1$, is called the \textit{master}. The second latch, $L2$, is called the \textit{slave}. The node between $L1$ and $L2$ is named $N1$.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.3\textwidth]{d_flip_flop_schematic.png}
     \caption{D flip-flop schematic}
@@ -197,7 +197,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   Figure~\ref{figure:6} shows the abstract symbol of the D flip-flop. When the $\bar{Q}$ output is not needed, use the minimized symbol on the right.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{d_flip_flop_symbols.png}
     \caption{D flip-flop full symbol (left) and minimal symbol (right)}
@@ -211,7 +211,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   An $N\textit{-bit register}$ is a bank of $N$ flip-flops that share a common $CLK$ input, so that all bits of the register are updated at the same time. Registers are the key building block of most sequential circuits. Figure~\ref{figure:7} shows a 4-bit register and its symbol.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{register_4bit.png}
     \caption{A 4-bit register's schematic (left) and symbol (right)}
@@ -234,7 +234,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   The enabled flip-flop is useful when the user wants to load a new input value only some of the time rather than on every clock edge. Figure~\ref{figure:8} shows the schematics and symbol of the enabled flip-flop.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.45\textwidth]{enabled_flip_flop_schematics_and_symbol.png}
     \caption{The enabled flip-flop schematics (a and b) and symbol (c)}
@@ -255,7 +255,7 @@ When the power is first applied to the circuit, the initial state is unknown and
 
   Resettable flip-flops are useful when the user wants to force a known state (i.e. 0) into all the flip-flops in a system when we first turn it on. Figure~\ref{figure:9} shows the schematics and symbol of the resettable flip-flop.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{resettable_flip_flop_schematics_and_symbol.png}
     \caption{The resettable flip-flop schematics (a and b) and symbol (c)}
@@ -296,7 +296,7 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 
   The three-inverter loop (Figure~\ref{figure:10}) is an \textit{astable} circuit because the value of $X$ contradicts with its initial value after looping back from $Z$ to $X$.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{three_inverter_loop.png}
     \caption{Three-inverter loop}
@@ -305,7 +305,7 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
 
   An example circuit below (Figure~\ref{figure:11}) is a sequential circuit with a \textit{race condition}. A race condition causes the circuit to fail when some gates are slower than the others. In this case, if the inverter from $CLK$ to $\overline{CLK}$ has a longer delay than the AND and the OR gates, then $Q$ will become stuck at 0. This is an example of \textit{asynchronous} circuit design in which outputs are directly fed back to inputs.
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{race_condition_example.png}
     \caption{An asynchronous circuit with a race condition}
@@ -349,7 +349,7 @@ Sequential circuits are not the same as combinational circuits. The outputs in s
   %%%%%%%%%%%%%%%%%%%%
   \item \textbf{FSM Design Example}
 
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=0.75\textwidth]{moore_and_mealy_fsm.png}
     \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
@@ -549,7 +549,7 @@ Timing is an essential aspect of sequential circuit design. This chapter covers 
 
 Two figures were selected from this chapter for special recognition. Figure~\ref{figure:13} was selected because it concisely shows the key difference between Moore FSM and Mealy FSM. In Moore FSM, the output depends only on the current state of the system. On the other hand, Mealy FSM's output depends not only on the current state of the system but also the raw inputs (notice the wire connecting the inputs with the output logic).
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{moore_and_mealy_fsm.png}
     \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
@@ -558,7 +558,7 @@ Two figures were selected from this chapter for special recognition. Figure~\ref
 
 Figure~\ref{figure:14} was selected because it shows how a register was constructed. An N-bit register is just a series of N flip-flops that share a common CLK input. When the clock raises its edge, all output bits of the register are changed simultaneously to the values of their corresponding input bits. In other occasions, the output bits retain their previous values. It is quite interesting and surprising to know that registers are constructed from flip-flops.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{register_4bit.png}
     \caption{Inside of a 4-bit register}
