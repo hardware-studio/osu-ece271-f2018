@@ -567,9 +567,7 @@ The previous subsection introduced arithmetic and sequential circuits for manipu
     \label{fig:rom_bit_cell}
   \end{figure}
 
-  To read a cell, the bitline is \textit{weakly} pulled HIGH. Then, the wordline is turn ON. If the transistor is present, it pull the bitline LOW; otherwise, the bitline remains HIGH.
-
-  Note that ROM is read only memory, and so there is no way to write to a bitcell.
+  To read a cell, the bitline is \textit{weakly} pulled HIGH. Then, the wordline is turn ON. If the transistor is present, it pull the bitline LOW; otherwise, the bitline remains HIGH. Despite their names, most modern ROM can be written.
 
   %%%%%%%%%%%%%%%%%%%%
   % Logic Using Memory Arrays
@@ -657,6 +655,18 @@ An nMOS transistor is placed at the junction without a dot in the array. Note th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
 
+This chapter introduced digital building blocks used in many---if not most---digital systems. These blocks include arithmetic circuits such as adders, subtractors, comparators, multipliers, dividers, and shifters; sequential building blocks such as counters and shift registers; and arrays for memory and logic. The number systems are also covered sufficiently throughout this chapter, such as fixed- and floating-point numbers and how to represent them using binary bits.
+
+Adders form the basis of most arithmetic circuits. A half adder adds two inputs, $A$ and $B$, and produces a sum $S$ and a carry out $C_{out}$. A works just like the half adder but has an additional input---the carry in $C_{in}$. $N$ full adders can be chained together to form a carry propagate adder (CPA) that adds two $N$-bit numbers. This type of CPA is called the ripple-carry adder since the carry ripples from one adder to another. CPAs can be made faster by the lookahead and the prefix techniques.
+
+A subtractor is just an adder where the second input is negated by an inverter, and it takes in an additional $C_{in} = 1$ due to the property of two's complement.
+
+Fractional numbers can be represented by fixed- and floating-point forms. Fixed-point numbers are analogous to decimals, and floating-point numbers are analogous to scientific notation. Fixed-point numbers use ordinary arithmetic circuits, whereas floating-point numbers require more complicated hardware to extract and process the sign, exponent, and mantissa of the notation.
+
+Large memories can be organized into arrays of words. There are two common types of memories: RAM (volatile) and ROM (nonvolatile). RAMs are further classified into SRAM (static RAM), which use cross-coupled inverters to store the data, and DRAM (dynamic RAM), which use a charge on a capacitor to store the data. ROM stores the data by the presence or absence of the transistors in the bit cells. Despite their names, most modern ROM can be written.
+
+Arrays can be used to not only store memory but also build logic. Two common types of logic arrays are PLA and FPGA. PLAs are composed of dedicated connections between configurable AND and OR arrays (conventional logic), and they only implement combinational logic. FPGAs, on the other hand, are newer and more advanced. Modern FPGAs are easy to reprogram and are large and cheap enough to build highly sophisticated digital systems.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Grey Box Exploration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -666,12 +676,16 @@ An nMOS transistor is placed at the junction without a dot in the array. Note th
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % First grey box
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item The first blurb is on page , which states \textit{}
+  \item The first blurb is on page 255, which states \textit{Fixed-point number systems are commonly used for banking and financial applications that require precision but not a large range.}
+
+  The maximum the money in transaction is in trillions, which is \textit{really} rare in real life. For a typical person in banking and finance, the amount of money they can transact is even smaller: millions or hundreds of thousands is the maximum the money can realistically get. In the US dollar system, the decimal part of the number is always two-digit long (0 cents--99 cents), and the integer part is---realistically---six- to seven-digit long at maximum. Each digit varies from 0 to 9, which can be represented by a 4-bit binary number. Therefore, in the banking and finance's point of view, the transaction money can be represented by a fixed-point binary number with 24 bits of integer part and 8 bits of decimal part.
 
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Second grey box
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \item The second blurb is on page , which states \textit{}
+  \item The second blurb is on page 270, which states \textit{Flash memory drives with Universal Serial Bus (USB) connectors have replaced floppy disks and CDs for sharing files because Flash costs have dropped so dramatically.}
+
+  Flash memory drives use electrically erasable programmable read only memory (EEPROM) to store information. When a USB connects to a computer, the type of ROM and the data values to program are determined. Thus, to read from and write to a USB, the computer uses firmware to manipulate the charge of the capacitors inside the ROM. On the other hand, floppy disks use magnetism to store data, and CDs use optics and mechanics to hold information. Without proper handling, CDs and floppy disks can be easily damaged, causing loss of information. Due to this disadvantage and the Flash memory's continually decreasing costs, Flash memory becomes popular and gradually replaces the other two.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -679,32 +693,32 @@ An nMOS transistor is placed at the junction without a dot in the array. Note th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Figures}
 
-Two figures were selected from this chapter for special recognition. Figure was selected because
+Two figures were selected from this chapter for special recognition. Figure~\ref{fig:subtractor_symbol_implementation} was selected because it shows that a subtractor is just a modified adder where the second input is obtained by getting the two's complement of its orignal value: $-B = \overline{B} + 1$. Then, setting $C_{in} = 1$ to the adder to balance the equation. The $Y = A - B$ subtractor is constructed.
 
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=0.5\textwidth]{moore_and_mealy_fsm.png}
-%     \caption{Finite state machines: (a) Moore machine, (b) Mealy machine}
-%     \label{fig:13}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.22\textwidth]{subtractor_symbol_implementation.png}
+    \caption{Subtractor: (a) symbol, (b) implementation}
+    \label{fig:subtractor_symbol_implementation}
+\end{figure}
 
-Figure was selected because
+Figure~\ref{fig:general_fpga_layout} was selected because it shows the general layout of an FPGA: several logic elements (LEs) surrounded by input/output elements (IOEs). The LEs can be configured to perform combinational or sequential functions. The IOEs helps the FPGA to interface with the outside world. This layout also shows that the FPGA can be flexibly programmed to construct sophisticated digital systems.
 
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=0.25\textwidth]{register_4bit.png}
-%     \caption{Inside of a 4-bit register}
-%     \label{fig:14}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{general_fpga_layout.png}
+    \caption{General FPGA layout}
+    \label{fig:general_fpga_layout}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Example Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Problems}
 
-See the attached images on the next four pages.
+See the attached images on the next three pages.
 
-% \includepdf[page=-]{example_problems}
+\includepdf[pages=-]{example_problems}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary
@@ -785,12 +799,18 @@ All definitions were found from the Google search engine, typing "define arithme
 
 See the attached image on the next page.
 
-% \includepdf[page=-]{interview_question}
+\includepdf[pages=-]{interview_question}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reflection
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reflection}
+
+I learn a lot of new things from this chapter. I has had a little familiarity with arithmetic circuits, but this chapter really expands my knowledge by diving deep into the circuit and logic aspects of various types of arithmetic circuits.
+
+The content of this chapter is quite easy to grasp since I think it is closely related to mathematics and logic. What blows my mind the most is the method to organize memory into arrays and cells. The organization method seems very simple but also elegant.
+
+I have been using an FPGA for the lab version of this course, and now I finally learn what FPGAs are made of. I also learn that we can write information onto \textit{read only} memory despite its name.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Questions for Lecture
@@ -798,9 +818,9 @@ See the attached image on the next page.
 \section{Questions for Lecture}
 
 \begin{enumerate}
-  \item
-  \item
-  \item
+  \item How can we write information onto the read only memory?
+  \item Are there better ways to organize memories than using arrays?
+  \item What storage technology do solid-state drives (SSDs) use such that it makes writing and reading information so fast?
 \end{enumerate}
 
 \end{document}
