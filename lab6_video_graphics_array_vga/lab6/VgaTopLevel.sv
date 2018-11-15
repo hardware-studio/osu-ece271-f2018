@@ -4,7 +4,7 @@ module VgaTopLevel (
     output logic [3:0] red, green, blue
 );
 
-logic vgaclk, sync_b, blank_b;
+logic vgaclk, isdisplayed;
 logic [9:0] x, y;
 
 HalfClock clock(
@@ -16,13 +16,14 @@ VgaController vga(
     .vgaclk(vgaclk),
     .hsync(hsync),
     .vsync(vsync),
-    .sync_b(sync_b),
-    .blank_b(blank_b),
+    .isdisplayed(isdisplayed),
     .x(x),
     .y(y)
 );
 
 VgaDrawer drawer(
+    .clk(vgaclk),
+    .isdisplayed(isdisplayed),
     .x(x),
     .y(y),
     .r(red),

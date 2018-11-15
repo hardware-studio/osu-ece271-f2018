@@ -3,7 +3,11 @@ module HalfClock(
     output logic clk_out
 );
 
+logic out = 0;
+
 always_ff @(posedge clk_in)
-    clk_out <= ~clk_out;
+    out <= ~out;
+
+assign clk_out = out;
 
 endmodule

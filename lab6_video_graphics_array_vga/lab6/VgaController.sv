@@ -1,33 +1,45 @@
 module VgaController #(parameter
-    HSYN = 10'd96,                        // horizontal sync
-    HBP = 10'd48,                         // horizontal back porch
     HACTIVE = 10'd640,                    // horizontal active resolution
     HFP = 10'd16,                         // horizontal front porch
-    HMAX = HSYN + HBP + HACTIVE + HFP,    // horizontal max resolution
+    HSYN = 10'd96,                        // horizontal sync
+    HBP = 10'd48,                         // horizontal back porch
+    HMAX = HACTIVE + HFP + HSYN + HBP,    // horizontal max resolution
 
-    VSYN = 10'd2,                         // vertical sync
-    VBP = 10'd33,                         // vertical back porch
     VACTIVE = 10'd480,                    // verical active resolution
     VFP = 10'd10,                         // vertical front porch
-    VMAX = VSYN + VBP + VACTIVE + VFP    // verical max resolution
+    VSYN = 10'd2,                         // vertical sync
+    VBP = 10'd33,                         // vertical back porch
+    VMAX = VACTIVE + VFP + VSYN + VBP     // verical max resolution
 )(
     input logic vgaclk,
-    output logic hsync, vsync, sync_b, blank_b,
+    output logic hsync, vsync, isdisplayed,
     output logic [9:0] x, y  // 10 bits to cover all 640x480
 );
 
-// count the horizontal and vertical positions
-always @(posedge vgaclk) begin
-    if (x == HMAX - 1) y = (y + 1) % VMAX;
-    x = (x + 1) % HMAX;
+logic hsync_hi = 0, vsync_hi = 0, displayed = 0;
+logic [9:0] xcnt = 0, ycnt = 0;
+
+// count the horizontal and vertical positions, wrap around max resolutions
+always_ff @(posedge vgaclk) begin
+    // displayed  changes from HIGH to LOW at x == HACTIVE && y == VACTIVE
+    // and changes back from LOW to HIGH at x == 0 && y == 0
+    displayed <= (xcnt < HACTIVE) && (ycnt < VACTIVE);
+
+    // compute sync signals (change to active-low later)
+    // and ends right before the beginning of horizontal back porch
+    hsync_hi <= (HACTIVE + HFP <= xcnt) && (xcnt < HACTIVE + HFP + HSYN);
+
+    // vsync pulse starts right at the end of vertical front porch
+    // and ends right before the beginning of horizontal back porch
+    vsync_hi <= (VACTIVE + VFP <= ycnt) && (ycnt < VACTIVE + VFP + VSYN);
+
+    // move to the next pixel. Wrap x around HMAX and y around VMAX
+    if (xcnt == HMAX - 1) ycnt <= (ycnt + 1) % VMAX;
+    xcnt <= (xcnt + 1) % HMAX;
 end
 
-// compute active-low sync signals
-assign hsync = ~((x >= HACTIVE + HFP) & x < (HACTIVE + HFP + HSYN));
-assign vsync = ~((y >= VACTIVE + VFP) & y < (HACTIVE + VFP + VSYN));
-assign sync_b = hsync & vsync;
-
-// force blank output if outside of active area
-assign blank_b = (x < HACTIVE) & (y < VACTIVE);
+// produce the outputs
+assign {hsync, vsync, isdisplayed} = {~hsync_hi, ~vsync_hi, displayed};
+assign {x, y} = {xcnt, ycnt};
 
 endmodule
