@@ -1,0 +1,29 @@
+C:/School/ECE/Labs/Section6/XYCounter.sv {1 {vlog -work work -sv -stats=none C:/School/ECE/Labs/Section6/XYCounter.sv
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module XYCounter
+
+Top level modules:
+	XYCounter
+
+} {} {}} C:/School/ECE/Labs/Section6/Drawer.sv {1 {vlog -work work -sv -stats=none C:/School/ECE/Labs/Section6/Drawer.sv
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module Drawer
+
+Top level modules:
+	Drawer
+
+} {} {}} C:/School/ECE/Labs/Section6/top_level.sv {1 {vlog -work work -sv -stats=none C:/School/ECE/Labs/Section6/top_level.sv
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module top_level
+
+Top level modules:
+	top_level
+
+} {} {}} C:/School/ECE/Labs/Section6/half_clock.sv {1 {vlog -work work -sv -stats=none C:/School/ECE/Labs/Section6/half_clock.sv
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module half_clock
+
+Top level modules:
+	half_clock
+
+} {} {}}

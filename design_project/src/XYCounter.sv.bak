@@ -1,0 +1,13 @@
+module XYCounter(input logic clk.
+					  output logic vs, hs,
+					  output logic[9:0] x, y);
+					  
+	logic[9:0] xpos = 0;
+	logic[9:0] ypos = 0;
+	
+	always_ff @(posedge clk)
+		begin
+			if(xpos == 800)
+		
+			if(xpos == 800) xpos <= 0;
+			else 				 xpos <= xpos + 1;
