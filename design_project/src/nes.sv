@@ -29,6 +29,17 @@ module nes
 		begin 
 			if (pollClkCount == 833332)
 				begin
+					// Start polling controller by resetting pulse data, starting latch,
+					// and signaling start of new pulse
+					if (~pollClk)
+						begin
+							latch_inner <= 1;
+							new_pulse <= 1;
+							pulseClkCount <= 0;
+							pulseClk <= 0;
+							pulseCounter <= 0;
+						end
+					
 					pollClkCount <= 0;
 					pollClk <= ~pollClk;
 				end
@@ -37,87 +48,70 @@ module nes
 				
 			if (pulseClkCount == 599)
 				begin
+					if (new_pulse && ~pulseClk)	// Only update if controller poll has started
+						begin
+							// Track beginning of clock pulse to controller (after latch)
+							if (pulseCounter > 0 && latch_inner == 0)
+								start_pulse_out <= 1;
+					
+							// Count pulse
+							pulseCounter <= pulseCounter + 1;
+						end
+						
+					if (new_pulse && pulseClk)	// Only update if controller poll has started
+						begin
+							// Reset latch once its 12us have passed
+							if (pulseCounter > 0 && latch_inner)
+								latch_inner <= 0;
+						
+							// Reset pulse data if all buttons have been accounted
+							if (pulseCounter == 9)
+								begin
+									new_pulse <= 0;
+									start_pulse_out <= 0;
+									y_btn_press <= 0;
+									x_btn_press <= 0;
+								end
+							else
+								begin
+									// Check for UP or DOWN buttons being pressed and track that
+									// a button in y direction has been pressed
+									if (pulseCounter == UP && data == 0) 
+										begin
+											y <= 0;
+											y_btn_press <= 1;
+										end
+									else if (pulseCounter == DOWN && data == 0)
+										begin
+											y <= 1;
+											y_btn_press <= 1;
+										end
+									else if (pulseCounter >= UP && pulseCounter >= DOWN && y_btn_press == 0)	// Reset if no y button press
+										y <= 2;
+								
+									// Check for RIGHT or LEFT buttons being pressed and track that
+									// a button in x direction has been pressed
+									if (pulseCounter == LEFT && data == 0) 
+										begin
+											x <= 0;
+											x_btn_press <= 1;
+										end
+									else if (pulseCounter == RIGHT && data == 0)
+										begin
+											x <= 1;
+											x_btn_press <= 1;
+										end
+									else if (pulseCounter >= LEFT && pulseCounter >= RIGHT && y_btn_press == 0)	// Reset if no x button press
+										x <= 2;
+								end
+						end
+				
 					pulseClkCount <= 0;
 					pulseClk <= ~pulseClk;
 				end
 			else
 				pulseClkCount <= pulseClkCount + 1;
-		end
-		
-	// Start polling controller by resetting pulse data, starting latch,
-	// and signaling start of new pulse
-	always_ff @(posedge pollClk)
-		begin
-			latch_inner <= 1;
-			new_pulse <= 1;
-			pulseClkCount <= 0;
-			pulseClk <= 0;
-			pulseCounter <= 0;
-		end
-	
-	always_ff @(posedge pulseClk)
-		begin
-			if (new_pulse)	// Only update if controller poll has started
-				begin
-					// Track beginning of clock pulse to controller (after latch)
-					if (pulseCounter > 0 && latch_inner == 0)
-						start_pulse_out <= 1;
-					
-					// Count pulse
-					pulseCounter <= pulseCounter + 1;
-				end
-		end
-		
-	always_ff @(negedge pulseClk)
-		begin
-			if (new_pulse)	// Only update if controller poll has started
-				begin
-					// Reset latch once its 12us have passed
-					if (pulseCounter > 0 && latch_inner)
-						latch_inner <= 0;
-						
-					// Reset pulse data if all buttons have been accounted
-					if (pulseCounter == 9)
-						begin
-							new_pulse <= 0;
-							start_pulse_out <= 0;
-							y_btn_press <= 0;
-							x_btn_press <= 0;
-						end
-					else
-						begin
-							// Check for UP or DOWN buttons being pressed and track that
-							// a button in y direction has been pressed
-							if (pulseCounter == UP && data == 0) 
-								begin
-									y <= 0;
-									y_btn_press <= 1;
-								end
-							else if (pulseCounter == DOWN && data == 0)
-								begin
-									y <= 1;
-									y_btn_press <= 1;
-								end
-							else if (pulseCounter >= UP && pulseCounter >= DOWN && y_btn_press == 0)	// Reset if no y button press
-								y <= 2;
-								
-							// Check for RIGHT or LEFT buttons being pressed and track that
-							// a button in x direction has been pressed
-							if (pulseCounter == LEFT && data == 0) 
-								begin
-									x <= 0;
-									x_btn_press <= 1;
-								end
-							else if (pulseCounter == RIGHT && data == 0)
-								begin
-									x <= 1;
-									x_btn_press <= 1;
-								end
-							else if (pulseCounter >= LEFT && pulseCounter >= RIGHT && y_btn_press == 0)	// Reset if no x button press
-								x <= 2;
-						end
-				end
-		end
+		end		
 		
 	// Assign outputs, and only set clock if part of pulse output
 	assign latch_out = latch_inner;

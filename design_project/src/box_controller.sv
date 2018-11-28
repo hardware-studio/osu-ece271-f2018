@@ -2,7 +2,6 @@ module box_controller
 						  #(parameter SIZE = 40)
 							(input logic vs,
 							 input logic[1:0] dir_x, dir_y,
-							 input logic[9:0] x, y,
 							 output logic[3:0] box_r, box_g, box_b,
 							 output logic[9:0] box_x, box_y, box_size);
 	// Track x and y

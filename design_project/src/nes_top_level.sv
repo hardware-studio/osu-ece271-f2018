@@ -1,4 +1,4 @@
-module ps2_top_level(input logic clk, data,
+module nes_top_level(input logic clk, data,
 							output logic vs, hs, latch_out, clk_out,
 							output logic[3:0] r, g, b);
 	// Track x and y and slow clock
@@ -42,8 +42,6 @@ module ps2_top_level(input logic clk, data,
 		.vs(vs),
 		.dir_x(dir_x), 
 		.dir_y(dir_y),
-		.x(xpos), 
-		.y(ypos),
 		.box_r(box_r), 
 		.box_g(box_g), 
 		.box_b(box_b),

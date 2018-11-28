@@ -78,17 +78,15 @@ module irReadWord(input logic val, clk, waitForRepeat,
 	// anyway
 	logic prevToggle = 1;
 	
-	// Reset if time limit for repeating signal is up
-	always_ff @(negedge waitForRepeat)
+	always_ff @(posedge clk, negedge waitForRepeat)
 		begin
-			out <= 0;
-			count <= 0;
-			finished <= 1;
-		end
-	
-	always_ff @(posedge clk)
-		begin
-			if (count == 13)	// Reset count, store final value, and signal finished transmission
+			if (~waitForRepeat)	// Reset if time limit for repeating signal is up
+				begin
+					out <= 0;
+					count <= 0;
+					finished <= 1;
+				end
+			else if (count == 13)	// Reset count, store final value, and signal finished transmission
 				begin
 					out <= (out << 1) + val;
 					finished <= 1;
@@ -132,42 +130,70 @@ module irConvertPulse(input logic data, clk,
 	logic idle = 1;
 	logic out = 0;
 	
+	logic tcReset = 0;
+	logic dcReset = 0;
+	logic dcResetSuccess = 0;
+	
 	always_ff @(posedge data)
 		begin
 			if (idle) // Reset time counter if start of a transmission
 				begin
-					timeCounter <= 32;
 					dataCounterOne <= 0;
 					dataCounterTwo <= 1;
-					waitCounter <= 0;
-					idle <= 0;
+					tcReset <= 1;
+				end
+			else if (dcReset)
+				begin
+					if (timeCounter > 31 && dataCounterTwo < 32) 
+						begin
+							dataCounterOne <= 0;
+							dataCounterTwo <= 1;
+						end
+					else if (dataCounterOne < 32) 					
+						begin
+							dataCounterOne <= 1;
+							dataCounterTwo <= 0;
+						end
+						
+					dcResetSuccess <= 1;
 				end
 			else	// Increment data 
 				begin
 					if (timeCounter > 31 && dataCounterTwo < 32) dataCounterTwo <= dataCounterTwo + 1;
 					else if (dataCounterOne < 32) 					dataCounterOne <= dataCounterOne + 1;
+					
+					tcReset <= 0;
+					dcResetSuccess <= 0;
 				end
 		end
 		
 	always_ff @(posedge clk)
 		begin
-			if (timeCounter == 63)	// Set output and reset
+			if (tcReset)
+				begin
+					timeCounter <= 33;
+					waitCounter <= 0;
+					idle <= 0;
+				end
+			else if (timeCounter == 63)	// Set output and reset
 				begin
 					// Increment counter if still in window for additional
 					if (idle && dataCounterOne == 0 && dataCounterTwo == 0 && waitCounter < 78)
 						waitCounter <= waitCounter + 1;
 				
-					out <= dataCounterOne == 0 && dataCounterTwo == 32;
-					newval <= dataCounterOne == 32 || dataCounterTwo == 32;
-					idle <= dataCounterOne == 0 && dataCounterTwo == 0;
-					dataCounterOne <= 0;
-					dataCounterTwo <= 0;
+					out <= dataCounterOne == 0 && dataCounterTwo == 32 && ~dcReset;
+					newval <= (dataCounterOne == 32 || dataCounterTwo == 32) && ~dcReset;
+					idle <= (dataCounterOne == 0 && dataCounterTwo == 0) || ~dcReset;
+					dcReset <= 1;
 					timeCounter <= 0;
 				end
 			else	// Increment data
 				begin
 					timeCounter <= timeCounter + 1;
 					newval <= 0;
+					
+					if (dcResetSuccess)
+						dcReset <= 0;
 				end
 		end
 		
