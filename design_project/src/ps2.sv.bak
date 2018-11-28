@@ -1,0 +1,4 @@
+module ps2 (input logic clk, data,
+				output logic[2:0] dir_x, dir_y);
+	logic[10:0] bits = 11'd0;
+	logic[3:0] counter = 0;

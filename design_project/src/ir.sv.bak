@@ -1,0 +1,17 @@
+module ir(input data, clk,
+			 output logic[1:0] dir_x, dir_y);
+	logic[10:0] count = 0; //1389
+	logic newclk = 0;
+	
+	always_ff @(posedge clk)
+		if (count < 1388)
+				count <= count + 1;
+		else
+			begin
+				count <= 0;
+				newclk = ~newclk;
+			end
+			
+	
+			
+endmodule
