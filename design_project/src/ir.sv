@@ -2,7 +2,7 @@
 
 module ir
 			#(parameter UP = 2, DOWN = 8, LEFT = 4, RIGHT = 6)
-			(input data, clk,
+			(input logic data, clk,
 			 output logic[1:0] dir_x, dir_y);
 	// Count for slowing clock and new clock
 	logic[10:0] clkCount = 0;

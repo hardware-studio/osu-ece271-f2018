@@ -1,0 +1,22 @@
+module nes
+			 #(parameter UP = 2, DOWN = 8, LEFT = 4, RIGHT = 6)
+			 (input logic data, clk,
+			  output logic latch_out, clk_out,
+			  output logic[1:0] dir_x, dir_y);
+	logic[1:0] x = 2;
+	logic[1:0] y = 2;
+	
+	logic[19:0] pollClkCount = 0;//833333
+	logic pollClk = 0;
+	
+	always_ff @(posedge clk)
+		begin 
+			if (pollClkCount == 833332)
+				begin
+					pollClkCount <= 0;
+					pollClk <= ~pollClk;
+				end
+			else
+				pollClkCount <= pollClkCount + 1;
+		end
+		
