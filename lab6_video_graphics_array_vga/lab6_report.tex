@@ -105,6 +105,8 @@ The timing sequence of an VGA controller is as follows: the pixels are displayed
 
 Figure~\ref{fig:640x480_60hz_vga_timing_sequence} shows the VGA timing sequence for the 640x480 resolution with 60 Hz refresh rate.
 
+\newpage
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{vga_timing_sequence_640x480_60hz.png}
@@ -112,12 +114,84 @@ Figure~\ref{fig:640x480_60hz_vga_timing_sequence} shows the VGA timing sequence 
   \label{fig:640x480_60hz_vga_timing_sequence}
 \end{figure}
 
+Think of the timing sequence like this: the total resolution is $640 + 16 + 96 + 48 = 800$ by $480 + 33 + 2 + 10 = 525$, but the active zone is 640x480 on the top left corner of the frame.
+
+The block diagram of the design is illustrated in Figure~\ref{fig:block_diagram} below:
+
+\newpage
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{lab6_block_diagram.png}
   \caption{The block diagram}
   \label{fig:block_diagram}
 \end{figure}
+
+The SystemVerilog code which implements these modules is located in the \nameref{sec:appendix} section.
+
+Putting the code through ModelSim simulation, the following results are yielded. The caption of each figure will explain the significance of the event the image captures.
+
+\newpage
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_hactive_end_hfp_start.png}
+  \caption{When $x$ (the horizontal counter) reaches 640, the counter goes past the active resolution, and so this is where the \textbf{horizontal front porch starts}. \href{https://i.imgur.com/QpwEYGF.jpg}{High-resolution image}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{simluation_hfp_end_hsync_start.png}
+  \caption{When $x$ reaches 656, the counter has gone an extra 16---which is the width of the horizontal front porch, and so this is where the \textbf{horizontal sync pulse starts going LOW}. \href{https://i.imgur.com/EfWxYUW.jpg}{High-resolution image}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_hsync_end_hbp_start.png}
+  \caption{When $x$ reaches 752, the counter has gone an extra 96---which is the width of the horizontal sync pulse, and so this is where the \textbf{horizontal back porch starts}. \href{https://i.imgur.com/IkwIol1.jpg}{High-resolution image}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_x_complete_one_line.png}
+  \caption{When $x$ reaches 800, it will reset back to 0, and $y$ (the vertical counter) will increased by 1. The counters will keep counting horizontally and then vertically until the vertical counter reaches its limit. \href{https://i.imgur.com/Tqamgkr.jpg}{High-resolution image}}
+\end{figure}
+
+Similarly, the figures below show and explain how the vertical front porch, sync pulse, and back porch work.
+
+\newpage
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_vfp_end_vsync_start.png}
+  \caption{When $x$ reaches 640 and $y$ reaches 480, the counter has finished one whole active zone of the screen, and so this is where the \textbf{vertical front porch starts}. \href{https://i.imgur.com/aNPD7pG.jpg}{High-resolution image}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_vfp_end_vsync_start.png}
+  \caption{When $y$ reaches 490, the counter has gone an additional 10---which is the width of the vertical front porch, and so this is where the \textbf{vertical sync pulse starts going LOW}. \href{https://i.imgur.com/inYrF2u.jpg}{High-resolution image}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_vfp_end_vsync_start.png}
+  \caption{When $y$ reaches 492, the counter has gone an additional 2---which is the width of the vertical sync pulse, and so this is where the \textbf{vertical back porch starts}. \href{https://i.imgur.com/c5Ki9mq.jpg}{High-resolution image}}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{simulation_vfp_end_vsync_start.png}
+  \caption{When $x$ reaches 800 and $y$ reaches 525, the counter has finished the entire screen. Since they have reached their limit, the counter will be wrapped around, and $x$ and $y$ will both reset to 0. \href{https://i.imgur.com/vl7NCR8.jpg}{High-resolution image}}
+\end{figure}
+
+\newpage
+
+According to the figures above, the simulation yields the expected results. I uploaded the program to the FPGA and get the desired screen. Therefore, the VGA controller and drawer have been successfully implemented.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment Notes
@@ -129,6 +203,8 @@ Figure~\ref{fig:640x480_60hz_vga_timing_sequence} shows the VGA timing sequence 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{Reflection}
 
+This lab, particularly the timing sequence of the VGA protocol, was quite challenging. It took me more than 3 hours to finally get the timing right in SystemVerilog. The rest of the program was very easy, though. I was able to draw a red box on top of the blue background on the screen using this program.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Study Questions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,19 +213,19 @@ Figure~\ref{fig:640x480_60hz_vga_timing_sequence} shows the VGA timing sequence 
 \begin{enumerate}
   \item What was the toughest aspect of ECE 272? What should be changed or added to the ECE 272 manual to make this course better?
 
-
+  The toughest aspect of ECE 272 was the SystemVerilog tasks. It was difficult to do sequential logic and timing in SystemVerilog, especially the SPI and the VGA labs. A suggestion to make ECE 272 better is to add starter code into the lab manual, at least for the SPI and the VGA labs.
 
   \item What would you like to explore further about Lattice Diamond or Digital Logic Design?
 
-
+  I would like to learn more about building complex state machine using SystemVerilog. Also, I would like to explore different kinds of communication protocols in digital logic design, such as HDMI, DisplayPort, Bluetooth, etc.
 
   \item What section of ECE 272 did you dislike the most? Why?
 
-
+  I disliked this section (VGA) the most because the lab manual really helped me nothing. The vertical front porch and back porch timing of this lab's manual were inconsistent with those of the official DE10-Lite manual. The XY module design description in the Design section was also very vague.
 
   \item What was your favorite section of ECE 272? Why?
 
-
+  My favorite section of ECE 272 was the SPI lab because the objective was clear and easy to understand. The program did not have much timing into it, so it was clearly easier than the VGA lab. SPI was also one of the topics I'm familiar with as well.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
