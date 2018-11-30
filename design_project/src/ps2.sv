@@ -1,9 +1,9 @@
 module ps2 
-				#(parameter UP = 8'h1D, DOWN = 8'h1B, LEFT = 8'h1C, RIGHT = 8'h23)
+				#(parameter UP = 8'h1D, DOWN = 8'h1B, LEFT = 8'h1C, RIGHT = 8'h23)  // PS2 key code of W, S, A, and D, repsectively
 				(input logic clk, data,
 				output logic[1:0] dir_x, dir_y);
 	// Track data input
-	logic[7:0] bits = 8'd0;
+	logic[7:0] bits = 8'b0;
 	
 	// Track count of bits coming in and number of ones
 	logic[3:0] count = 0;
