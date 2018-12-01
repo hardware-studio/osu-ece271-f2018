@@ -3,15 +3,22 @@
 \usepackage{amsmath}
 \usepackage{array}
 \usepackage{caption}
-\usepackage[top=1in, bottom=1in, left=0.75in, right=0.75in]{geometry}
+\usepackage[margin=1in]{geometry}
+
 \usepackage{graphicx}
+\graphicspath{{figures/}}
+
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage[utf8]{inputenc}
 \usepackage{multirow}
+\usepackage{minted}
 \usepackage{pdfpages}
 \usepackage[section]{placeins}
 
-\graphicspath{{figures/}}
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftsecdotsep}}
+\renewcommand\cftsubsecdotsep{\cftdot}
+\renewcommand\cftsubsubsecdotsep{\cftdot}
 
 \begin{document}
 
@@ -19,7 +26,7 @@
   \begin{center} \LARGE
     \begin{figure}[ht]
       \centering
-      \includegraphics[width=0.5\textwidth]{osu_logo.png}
+      \includegraphics[width=0.75\textwidth]{osu_logo.png}
     \end{figure}
 
     \vspace{0.25in}
@@ -30,17 +37,17 @@
 
     ECE 271
 
-    \vfill
+    \vspace{1in}
 
     \textbf{Final Design Project}
 
-    \vspace{0.25in}
+    \vspace{1in}
 
-    Benjamin Geyer
+    \textit{Benjamin Geyer}
 
-    Phi Luu
+    \textit{Christien Hotchkiss}
 
-    Christien Hotchkiss
+    \textit{Phi Luu}
 
     \vfill
 
@@ -48,24 +55,122 @@
   \end{center}
 \end{titlepage}
 
-\tableofcontents \newpage
+\tableofcontents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Test citation \cite{SparkFunSpi}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Project Goals
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Project Goals}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % High-Level Description
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{High-Level Description}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Top-Level Hardware Diagram
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Top-Level Hardware Diagram}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Top-Level HDL Diagram
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Top-Level Hardware Diagram}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Documentation
+% Controllers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Controllers}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PS/2 Keyboard
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{PS/2 Keyboard}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RC5 IR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RC5 IR}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NES Controller
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{NES Controller}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% HDL Modules
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{HDL Modules}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PS/2 Modules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{PS/2 Modules}
+
+%%%%%%%%%%%%%%%%%%%%
+% PS/2 Decoder
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{PS/2 Decoder}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% RC5 IR Modules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RC5 IR Modules}
+
+%%%%%%%%%%%%%%%%%%%%
+% RC5 IR Decoder
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{RC5 IR Decoder}
+
+%%%%%%%%%%%%%%%%%%%%
+% RC5 IR Convert Pulse
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{RC5 IR Convert Pulse}
+
+%%%%%%%%%%%%%%%%%%%%
+% RC5 IR Read Word
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{RC5 IR Read Word}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NES Modules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{NES Modules}
+
+%%%%%%%%%%%%%%%%%%%%
+% NES Decoder
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{NES Decoder}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General Modules Used in Each Design
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{General Modules Used in Each Design}
+
+%%%%%%%%%%%%%%%%%%%%
+% Clock Frequency Module
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Clock Frequency Module}
+
+%%%%%%%%%%%%%%%%%%%%
+% Box Controller Module
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Box Controller Module}
+
+%%%%%%%%%%%%%%%%%%%%
+% XY Counter Module
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{XY Counter Module}
+
+%%%%%%%%%%%%%%%%%%%%
+% Drawer Module
+%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Drawer Module}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Putting It All Together
@@ -73,19 +178,59 @@ Test citation \cite{SparkFunSpi}.
 \section{Putting It All Together}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Future Development
+% Above and Beyond
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Future Development}
+\section{Above and Beyond}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Appendix}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{ieeetr}
-\bibliography{references}
+\subsection{SystemVerilog Source Code}
+
+\subsubsection{Top Level}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/top_level.sv}
+
+\subsubsection{PS/2 Top Level}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/ps2_top_level.sv}
+
+\subsubsection{PS/2 Controller}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/ps2.sv}
+
+\subsubsection{RC5 IR Top Level}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/ir_top_level.sv}
+
+\subsubsection{RC5 IR Controller}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/ir.sv}
+
+\subsubsection{NES Top Level}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/nes_top_level.sv}
+
+\subsubsection{NES Controller}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/nes.sv}
+
+\subsubsection{Box Controller}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/box_controller.sv}
+
+\subsubsection{Half Clock}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/half_clock.sv}
+
+\subsubsection{XY Counter}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/XYCounter.sv}
+
+\subsubsection{Drawer}
+
+\inputminted[breaklines, fontfamily=tt, fontsize=\small, frame=lines, framesep=1.5em, linenos, numbersep=1.5em, style=vs]{systemverilog}{../src/Drawer.sv}
 
 \end{document}

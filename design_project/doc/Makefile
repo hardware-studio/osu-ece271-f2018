@@ -8,8 +8,6 @@ default: $(REPORT)
 
 $(REPORT): $(REPORT).tex
 	$(PDFTEX) $(PDFTEXFLAGS) $?
-	$(BIBTEX) $@
-	$(PDFTEX) $(PDFTEXFLAGS) $?
 	$(PDFTEX) $(PDFTEXFLAGS) $?
 
 .PHONY: clean
